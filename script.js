@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const leaderboardBtn = document.getElementById("btn-leaderboard");
   const pointsBtn = document.getElementById("btn-points");
   const newGameBtn = document.getElementById("new-game-btn");
-  const dailyModeBtn = document.getElementById("daily-mode-btn");
 
   const leaderboardModal = document.getElementById("leaderboard-modal");
   const playerNameInput = document.getElementById("player-name-input");
@@ -33,22 +32,32 @@ document.addEventListener("DOMContentLoaded", () => {
   const restartBtn = document.getElementById("restart-btn");
 
   const dateTimeEl = document.getElementById("date-time");
-  const weatherEl = document.getElementById("weather");
   const introScreen = document.getElementById("intro-screen");
   const startBtn = document.getElementById("start-btn");
-  const soundToggle = document.getElementById("sound-toggle");
+
+  // Sound toggles
+  const introSoundToggle = document.getElementById("sound-toggle");
+  const navSoundToggle = document.getElementById("nav-sound-toggle");
   const bgMusic = document.getElementById("bg-music");
 
-function hasPlayedToday() {
-  const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
-  return localStorage.getItem("dailyPlayed") === today;
-}
+  // Mode buttons
+  const btnDaily = document.getElementById("btn-daily");
+  const btnRandom = document.getElementById("btn-random");
 
-function markDailyPlayed() {
-  const today = new Date().toISOString().slice(0, 10);
-  localStorage.setItem("dailyPlayed", today);
-}
+  
 
+  // ===========================
+  // 📅 Daily Puzzle Tracking
+  // ===========================
+  function hasPlayedToday() {
+    const today = new Date().toISOString().slice(0, 10); // YYYY-MM-DD
+    return localStorage.getItem("dailyPlayed") === today;
+  }
+
+  function markDailyPlayed() {
+    const today = new Date().toISOString().slice(0, 10);
+    localStorage.setItem("dailyPlayed", today);
+  }
 
   // ===========================
   // 🔊 Sound Effects + Music
@@ -62,25 +71,23 @@ function markDailyPlayed() {
     clue: new Audio("assets/sounds/clue.mp3"),
   };
 
-  soundToggle.addEventListener("click", () => {
-    soundOn = !soundOn;
-    if (soundOn) {
-      bgMusic.play();
-      soundToggle.textContent = "🔊 Sound On";
-    } else {
-      bgMusic.pause();
-      soundToggle.textContent = "🔇 Sound Off";
-    }
-  });
+  function updateSoundButtons() {
+    const label = soundOn ? "🔊 Sound On" : "🔇 Sound Off";
+    if (introSoundToggle) introSoundToggle.textContent = label;
+    if (navSoundToggle) navSoundToggle.textContent = label;
+  }
 
-  startBtn.onclick = () => {
-    introScreen.classList.add("hidden");
-    if (soundOn) bgMusic.play();
-    startNewGame(); // make sure this is defined later in the same block
-  };
+  function toggleSound() {
+    soundOn = !soundOn;
+    if (soundOn) bgMusic.play(); else bgMusic.pause();
+    updateSoundButtons();
+  }
+
+  introSoundToggle?.addEventListener("click", toggleSound);
+  navSoundToggle?.addEventListener("click", toggleSound);
 
   // ===========================
-  // 📅 Date + API ?
+  // 📅 Date Label
   // ===========================
   function updateDateLabel() {
     const today = new Date().toLocaleDateString("en-GB", {
@@ -88,6 +95,73 @@ function markDailyPlayed() {
     });
     dateTimeEl.textContent = `🗓️ ${today}`;
   }
+  updateDateLabel();
+
+
+  // ===========================
+// 📢 Modal Logic for Nav Buttons
+// ===========================
+
+// How to Play button
+howToBtn.addEventListener("click", () => {
+  modal.classList.remove("hidden");
+  modal.classList.add("active");
+});
+
+// Leaderboard button
+leaderboardBtn.addEventListener("click", () => {
+  const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+  dynamicPanel.innerHTML = `
+    <h2>🏆 Leaderboard</h2>
+    <ol>
+      ${leaderboard.map((entry, i) =>
+        `<li>${i === 0 ? "👑 " : ""}${entry.name}: ${entry.score}</li>`
+      ).join("")}
+    </ol>
+  `;
+  dynamicPanel.classList.add("show");
+});
+
+// ===========================
+// 🏆 Leaderboard Modal Logic
+// ===========================
+saveNameBtn.addEventListener("click", () => {
+  const name = playerNameInput.value.trim();
+  if (name) {
+    const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+    leaderboard.push({ name, score });
+    localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+  }
+  leaderboardModal.classList.add("hidden");
+  endgameOverlay.classList.add("hidden"); // hide overlay too if open
+  startNewGame();
+});
+
+skipNameBtn.addEventListener("click", () => {
+  leaderboardModal.classList.add("hidden");
+  endgameOverlay.classList.add("hidden");
+  startNewGame();
+});
+
+// Points / History button
+pointsBtn.addEventListener("click", () => {
+  const history = JSON.parse(localStorage.getItem("gameHistory")) || [];
+  dynamicPanel.innerHTML = `
+    <h2>📜 Game History</h2>
+    <ul>
+      ${history.map(h => `
+        <li>${h.date} — ${h.win ? "✅ Solved" : "❌ Failed"} in ${h.attempts} tries
+        <span class="bonus">+${h.scoreEarned}</span> ${h.daily ? "📅 Daily" : "🎲 Random"}</li>
+      `).join("")}
+    </ul>
+  `;
+  dynamicPanel.classList.add("show");
+});
+closeModalBtn.addEventListener("click", () => {
+  modal.classList.add("hidden");
+  modal.classList.remove("active");
+});
+
 
   // ===========================
   // 🧠 Word Bank
@@ -98,7 +172,9 @@ function markDailyPlayed() {
   fetch("data/dictionary.txt")
     .then(res => res.text())
     .then(text => {
-      const words = text.split(/\r?\n/).map(w => w.trim().toUpperCase()).filter(w => w.length === 5);
+      const words = text.split(/\r?\n/)
+        .map(w => w.trim().toUpperCase())
+        .filter(w => w.length === 5);
       validGuesses = [...new Set([...validGuesses, ...words])];
     })
     .catch(() => {
@@ -136,6 +212,7 @@ function markDailyPlayed() {
   let streak = parseInt(localStorage.getItem("streak")) || 0;
   let rewardedYellows = new Set();
   let rewardedGreens = new Set();
+  let gameOver = false;
 
   function updateScoreDisplay() {
     scoreDisplay.textContent = score;
@@ -148,7 +225,9 @@ function markDailyPlayed() {
   function showScoreFloat(amountOrText, color = "#44ff44", anchorEl = scoreDisplay) {
     const float = document.createElement("div");
     float.className = "score-float";
-    float.textContent = typeof amountOrText === "number" ? (amountOrText > 0 ? `+${amountOrText}` : `${amountOrText}`) : amountOrText;
+    float.textContent = typeof amountOrText === "number"
+      ? (amountOrText > 0 ? `+${amountOrText}` : `${amountOrText}`)
+      : amountOrText;
     if (typeof amountOrText !== "number") float.classList.add("streak");
     float.style.color = color;
 
@@ -160,42 +239,6 @@ function markDailyPlayed() {
     anchorEl.offsetParent?.appendChild(float);
     setTimeout(() => float.remove(), 1000);
   }
-
-  function startNewGame() {
-  if (isDailyMode && hasPlayedToday()) {
-    clueFeedback.textContent = "📅 You've already played today's puzzle!";
-    return; // prevent replay
-  }
-
-  targetWord = (isDailyMode ? getDailyWord() : getRandomWord()).toUpperCase();
-  currentRow = 0;
-  updateScoreDisplay();
-  createEmptyGrid();
-  clueFeedback.textContent = "";
-  newGameBtn.classList.add("hidden");
-  restartBtn.classList.remove("attention");
-  keys.forEach(key => key.classList.remove("correct", "present", "absent"));
-  rewardedYellows.clear();
-  rewardedGreens.clear();
-}
-
-
-  setInterval(() => {
-    if (isDailyMode) {
-      const newWord = getDailyWord().toUpperCase();
-      if (newWord !== targetWord) {
-        targetWord = newWord;
-        startNewGame();
-        clueFeedback.textContent = "🗓️ New Daily Puzzle!";
-      }
-    }
-  }, 60000);
-
-  dailyModeBtn.addEventListener("click", () => {
-    isDailyMode = !isDailyMode;
-    startNewGame();
-    clueFeedback.textContent = isDailyMode ? "📅 Daily Puzzle Activated" : "🎲 Random Puzzle Activated";
-  });
 
   function createEmptyGrid() {
     grid.innerHTML = "";
@@ -212,66 +255,194 @@ function markDailyPlayed() {
     }
   }
 
+  function startNewGame() {
+  if (isDailyMode) {
+    if (hasPlayedToday()) {
+      // Try to restore yesterday's grid
+      if (restoreDailyGridIfPlayed()) return;
+      clueFeedback.textContent = "📅 You've already played today's puzzle!";
+      gameOver = true; // lock input
+      return;          // leave grid untouched
+    }
+    targetWord = getDailyWord().toUpperCase();
+    gameOver = false;  // allow typing for fresh daily
+  } else {
+    targetWord = getRandomWord().toUpperCase();
+    createEmptyGrid(); // random mode always resets
+    gameOver = false;  // allow typing
+  }
+
+  currentRow = 0;
+  updateScoreDisplay();
+  clueFeedback.textContent = "";
+  newGameBtn.classList.add("hidden");
+  restartBtn.classList.remove("attention");
+  keys.forEach(key => key.classList.remove("correct", "present", "absent"));
+  rewardedYellows.clear();
+  rewardedGreens.clear();
+}
+
+  // ===========================
+  // 🎯 Guess Rendering Logic
+  // ===========================
   function renderGuess(guess, rowIndex) {
     const row = document.querySelectorAll(".guess-row")[rowIndex];
     const tiles = row.querySelectorAll(".tile");
-    let correctCount = 0;
 
+    const targetArr = [...targetWord];
+    const guessArr = [...guess];
+    const counts = {};
+    targetArr.forEach(l => counts[l] = (counts[l] || 0) + 1);
+
+        let correctCount = 0;
+
+    // First pass: mark correct letters
     for (let i = 0; i < 5; i++) {
-      const letter = guess[i];
+      const letter = guessArr[i];
       tiles[i].textContent = letter;
       tiles[i].classList.add("flip");
-      tiles[i].style.animationDelay = `${i * 100}ms`;
+      tiles[i].style.animationDelay = `${i * 80}ms`;
 
-      let state = "absent";
-      if (letter === targetWord[i]) {
-        state = "correct";
-                if (!rewardedGreens.has(letter)) {
+      if (letter === targetArr[i]) {
+        tiles[i].setAttribute("data-state", "correct");
+        updateKeyboard(letter, "correct");
+        sounds.correct?.play();
+        counts[letter] -= 1;
+        correctCount++;
+
+        if (!rewardedGreens.has(letter)) {
           score += 2;
           rewardedGreens.add(letter);
           showScoreFloat(2, "#44ff44", tiles[i]);
         }
-        correctCount++;
-      } else if (targetWord.includes(letter)) {
-        state = "present";
+      } else {
+        tiles[i].setAttribute("data-state", "absent"); // provisional
+      }
+    }
+
+    // Second pass: mark present vs absent (respect duplicates)
+    for (let i = 0; i < 5; i++) {
+      const letter = guessArr[i];
+      const state = tiles[i].getAttribute("data-state");
+      if (state === "correct") continue;
+
+      if (counts[letter] > 0) {
+        tiles[i].setAttribute("data-state", "present");
+        updateKeyboard(letter, "present");
+        sounds.present?.play();
+        counts[letter] -= 1;
+
         if (!rewardedYellows.has(letter)) {
           score += 1;
           rewardedYellows.add(letter);
           showScoreFloat(1, "#ffff44", tiles[i]);
         }
+      } else {
+        tiles[i].setAttribute("data-state", "absent");
+        updateKeyboard(letter, "absent");
+        sounds.absent?.play();
       }
-      if (isDailyMode) markDailyPlayed();
-
-      tiles[i].setAttribute("data-state", state);
-      updateKeyboard(letter, state);
-      sounds[state]?.play();
     }
 
     updateScoreDisplay();
 
     if (correctCount === 5) {
+      // Win
       streak++;
-      showScoreFloat("🔥 Streak +" + streak, "#ff8800", scoreDisplay);
       const bonus = (6 - currentRow) * 2;
       const earned = 5 + bonus;
       score += earned;
+      showScoreFloat("🔥 Streak +" + streak, "#ff8800", scoreDisplay);
       showScoreFloat(earned, "#00ffcc", scoreDisplay);
       clueFeedback.textContent = `🎉 Solved in ${currentRow + 1} rows! Bonus +${bonus}`;
       updateScoreDisplay();
       saveGameResult(true, currentRow + 1, earned);
+
+      if (isDailyMode) markDailyPlayed();
+      saveDailyGrid();
       leaderboardModal.classList.remove("hidden");
       playerNameInput.value = "";
       playerNameInput.focus();
-    } else if (currentRow === 5) {
+      markDailyPlayed();
+      gameOver = true; // lock input
+      showEndgameModal(true, targetWord);
+
+    }
+    else if (currentRow === 5) {
+      // Loss
       setTimeout(() => {
         streak = 0;
         updateScoreDisplay();
         saveGameResult(false, 6, 0);
+        if (isDailyMode) markDailyPlayed();
+        saveDailyGrid();
         showEndgameModal(false, targetWord);
       }, 600);
+      gameOver = true; // lock input
+
     }
   }
 
+  // ===========================
+// 💾 Save & Restore Daily Grid
+// ===========================
+function saveDailyGrid() {
+  const rows = [];
+  document.querySelectorAll(".guess-row").forEach(row => {
+    const tiles = Array.from(row.querySelectorAll(".tile")).map(tile => ({
+      letter: tile.textContent,
+      state: tile.getAttribute("data-state")
+    }));
+    rows.push(tiles);
+  });
+  localStorage.setItem("dailyGrid", JSON.stringify(rows));
+  localStorage.setItem("dailyDate", new Date().toDateString());
+}
+
+function restoreDailyGridIfPlayed() {
+  const savedDate = localStorage.getItem("dailyDate");
+  const today = new Date().toDateString();
+
+  if (savedDate === today) {
+    const rows = JSON.parse(localStorage.getItem("dailyGrid")) || [];
+    grid.innerHTML = "";
+    rows.forEach(rowData => {
+      const rowDiv = document.createElement("div");
+      rowDiv.classList.add("guess-row");
+      rowData.forEach(tileData => {
+        const tile = document.createElement("div");
+        tile.classList.add("tile");
+        tile.textContent = tileData.letter;
+        tile.setAttribute("data-state", tileData.state || "empty");
+        rowDiv.appendChild(tile);
+      });
+      grid.appendChild(rowDiv);
+    });
+    clueFeedback.textContent = "📅 You've already played today's puzzle!";
+    gameOver = true; // lock input
+    return true;
+  }
+  return false;
+}
+
+  // ===========================
+  // 📝 Save Game Results
+  // ===========================
+  function saveGameResult(win, attempts, scoreEarned) {
+    const history = JSON.parse(localStorage.getItem("gameHistory")) || [];
+    history.push({
+      date: new Date().toLocaleString(),
+      win,
+      attempts,
+      scoreEarned,
+      daily: isDailyMode
+    });
+    localStorage.setItem("gameHistory", JSON.stringify(history));
+  }
+
+  // ===========================
+  // ⌨️ Keyboard Input
+  // ===========================
   function updateKeyboard(letter, state) {
     const key = document.querySelector(`.key[data-key="${letter}"]`);
     if (key && !key.classList.contains("correct")) {
@@ -281,6 +452,7 @@ function markDailyPlayed() {
   }
 
   function handleKeyInput(key) {
+     if (gameOver) return;
     const keyBtn = document.querySelector(`.key[data-key="${key}"]`);
     if (keyBtn) {
       keyBtn.classList.add("pressed");
@@ -304,14 +476,18 @@ function markDailyPlayed() {
         setTimeout(() => clueFeedback.classList.remove("shake", "fade"), 600);
         return;
       }
-      renderGuess(guess, currentRow);
+      renderGuess(guess.toUpperCase(), currentRow);
       currentRow++;
     } else if (/^[A-Z]$/.test(key) && filled < 5) {
       tiles[filled].textContent = key;
     }
+   
   }
 
+
   document.addEventListener("keydown", (e) => {
+    if (gameOver) return;
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
     const key = e.key.toUpperCase();
     if (key === "ENTER" || key === "BACKSPACE" || /^[A-Z]$/.test(key)) {
       handleKeyInput(
@@ -329,215 +505,112 @@ function markDailyPlayed() {
   });
 
   // ===========================
-  // 📢 Modal Logic
-  // ===========================
-  if (modal && howToBtn && closeModalBtn) {
-    howToBtn.onclick = () => {
-      modal.classList.remove("hidden");
-      modal.classList.add("active");
-    };
-    closeModalBtn.onclick = () => {
-      modal.classList.add("hidden");
-      modal.classList.remove("active");
-    };
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) {
-        modal.classList.add("hidden");
-        modal.classList.remove("active");
-      }
-    });
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && !modal.classList.contains("hidden")) {
-        modal.classList.add("hidden");
-        modal.classList.remove("active");
-      }
-      if (e.key === "Enter" && !modal.classList.contains("hidden")) {
-        modal.classList.add("hidden");
-        modal.classList.remove("active");
-      }
-    });
+// 🎬 Endgame Modal Logic
+// ===========================
+function showEndgameModal(win, word) {
+  if (win) {
+    endgameTitle.textContent = "🎉 You Won!";
+    endgameMessage.textContent = "Great job, detective!";
+    continueBtn.style.display = "inline-block";
+    continueBtn.textContent = "Continue";
+    restartBtn.style.display = "none";
+  } else {
+    endgameTitle.textContent = "🕵️ Case Closed";
+    endgameMessage.textContent = `The word was: ${word}`;
+    continueBtn.style.display = "inline-block";
+    continueBtn.textContent = "Continue (20 pts)";
+    restartBtn.style.display = "inline-block";
   }
 
-  // ===========================
-  // 🏆 Leaderboard
-  // ===========================
-  function saveToLeaderboard(name, scoreValue) {
-    const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
-    leaderboard.push({ name, score: scoreValue });
-    leaderboard.sort((a, b) => b.score - a.score);
-    localStorage.setItem("leaderboard", JSON.stringify(leaderboard.slice(0, 10)));
-  }
 
-  leaderboardBtn.onclick = () => {
-    const leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
-    dynamicPanel.innerHTML = `
-      <h2>🏆 Leaderboard</h2>
-      <ol>
-        ${leaderboard.map((entry, i) =>
-          `<li>${i === 0 ? "👑 " : ""}${entry.name}: ${entry.score}</li>`
-        ).join("")}
-      </ol>
-    `;
-    dynamicPanel.classList.add("show");
-  };
+  endgameOverlay.classList.remove("hidden");
+}
 
-  saveNameBtn.onclick = () => {
-    const name = playerNameInput.value.trim();
-    if (name) saveToLeaderboard(name, score);
-    leaderboardModal.classList.add("hidden");
-    showEndgameModal(true, targetWord);
-  };
-
-  skipNameBtn.onclick = () => {
-    leaderboardModal.classList.add("hidden");
-    showEndgameModal(true, targetWord);
-  };
-
-  // ===========================
-  // 📊 Game History
-  // ===========================
-  function saveGameResult(win, attempts, scoreEarned) {
-    const history = JSON.parse(localStorage.getItem("gameHistory")) || [];
-    history.unshift({
-      date: new Date().toLocaleDateString(),
-      win,
-      attempts,
-      scoreEarned,
-      daily: isDailyMode
-    });
-    localStorage.setItem("gameHistory", JSON.stringify(history));
-  }
-
-  pointsBtn.onclick = () => {
-    const history = JSON.parse(localStorage.getItem("gameHistory")) || [];
-    dynamicPanel.innerHTML = `
-      <h2>📜 Game History</h2>
-      <ul>
-        ${history.map(h => `
-          <li>${h.date} — ${h.win ? "✅ Solved" : "❌ Failed"} in ${h.attempts} tries
-          <span class="bonus">+${h.scoreEarned}</span> ${h.daily ? "📅 Daily" : "🎲 Random"}</li>
-        `).join("")}
-      </ul>
-    `;
-    dynamicPanel.classList.add("show");
-  };
-
-  // ===========================
-  // 💡 Clue Exchange
-  // ===========================
-  clueButtons.forEach(button => {
-    button.addEventListener("click", () => {
-      sounds.clue.play();
-      const cost = parseInt(button.dataset.cost);
-      const type = button.dataset.type;
-
-      if (score < cost) {
-        clueFeedback.textContent = "Not enough points!";
-        clueFeedback.classList.add("fade");
-        setTimeout(() => clueFeedback.classList.remove("fade"), 600);
-        return;
-      }
-
-      score -= cost;
+// Continue button logic
+continueBtn.addEventListener("click", () => {
+  if (endgameTitle.textContent.includes("You Won")) {
+    endgameOverlay.classList.add("hidden");
+    startNewGame();
+  } else {
+    const costToContinue = 20;
+    if (score >= costToContinue) {
+      score -= costToContinue;
       updateScoreDisplay();
-
-      let revealed = "";
-
-      if (type === "reveal-position") {
-        const unrevealed = [...targetWord].map((char, i) => ({ char, i }))
-          .filter(({ char, i }) => {
-            const rows = document.querySelectorAll(".guess-row");
-            return ![...rows].some(r => r.querySelectorAll(".tile")[i]?.textContent === char);
-          });
-        if (unrevealed.length > 0) {
-          const { char, i } = unrevealed[Math.floor(Math.random() * unrevealed.length)];
-          revealed = `Letter at position ${i + 1}: ${char}`;
-        } else {
-          revealed = "No new letters left to reveal!";
-        }
-
-      } else if (type === "reveal-random") {
-        const unrevealedChars = [...targetWord].filter(c =>
-          !document.querySelector("#game-grid").textContent.includes(c)
-        );
-        if (unrevealedChars.length > 0) {
-          const randomChar = unrevealedChars[Math.floor(Math.random() * unrevealedChars.length)];
-          revealed = `Random letter: ${randomChar}`;
-        } else {
-          revealed = "No new letters left to reveal!";
-        }
-
-      } else if (type === "reveal-vowel") {
-        const vowels = ["A", "E", "I", "O", "U"];
-                const found = [...targetWord].filter(c => vowels.includes(c));
-        revealed = found.length > 0
-          ? `Vowel in word: ${found[Math.floor(Math.random() * found.length)]}`
-          : "No vowels in this word!";
-      }
-
-      clueFeedback.textContent = revealed || "No clue available.";
-      clueFeedback.classList.add("fade");
-      setTimeout(() => clueFeedback.classList.remove("fade"), 600);
-    });
-  });
-
-  // ===========================
-  // 🎬 Endgame Modal Logic
-  // ===========================
-  function showEndgameModal(win, word) {
-    if (win) {
-      endgameTitle.textContent = "🎉 You Won!";
-      endgameMessage.textContent = "Great job, detective!";
-      continueBtn.style.display = "inline-block";
-      continueBtn.textContent = "Continue";
-      restartBtn.style.display = "none";
-    } else {
-      endgameTitle.textContent = "🕵️ Case Closed";
-      endgameMessage.textContent = `The word was: ${word}`;
-      continueBtn.style.display = "inline-block";
-      continueBtn.textContent = "Continue (20 pts)";
-      restartBtn.style.display = "inline-block";
-    }
-    endgameOverlay.classList.remove("hidden");
-  }
-
-  continueBtn.addEventListener("click", () => {
-    if (endgameTitle.textContent.includes("You Won")) {
+      showScoreFloat(-costToContinue, "#ff4444", scoreDisplay);
       endgameOverlay.classList.add("hidden");
       startNewGame();
     } else {
-      const costToContinue = 20;
-      if (score >= costToContinue) {
-        score -= costToContinue;
-        updateScoreDisplay();
-        showScoreFloat(-costToContinue, "#ff4444", scoreDisplay);
-        endgameOverlay.classList.add("hidden");
-        startNewGame();
-      } else {
-        score = 0;
-        streak = 0;
-        updateScoreDisplay();
-        showScoreFloat("❌ Streak Reset", "#ff4444", scoreDisplay);
-        endgameMessage.textContent = "Not enough points — you lost all your points!";
-        restartBtn.classList.add("attention");
-      }
+      score = 0;
+      streak = 0;
+      updateScoreDisplay();
+      showScoreFloat("❌ Streak Reset", "#ff4444", scoreDisplay);
+      endgameMessage.textContent = "Not enough points — you lost all your points!";
+      restartBtn.classList.add("attention");
     }
+  }
+});
+
+// Restart button logic
+restartBtn.addEventListener("click", () => {
+  endgameOverlay.classList.add("hidden");
+  score = 0;
+  streak = 0;
+  updateScoreDisplay();
+  startNewGame();
+});
+
+
+  // ===========================
+  // 🎬 Intro Screen Logic
+  // ===========================
+  startBtn.onclick = () => {
+    introScreen.classList.add("hidden");
+    if (soundOn) bgMusic.play();
+    startNewGame();
+  };
+
+  document.getElementById("intro-howto")?.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+    modal.classList.add("active");
   });
 
-  restartBtn.addEventListener("click", () => {
-    endgameOverlay.classList.add("hidden");
-    score = 0;
-    streak = 0;
-    updateScoreDisplay();
+  // ===========================
+  // 📅 Mode Toggle (Daily vs Random)
+  // ===========================
+  function setMode(isDaily) {
+    isDailyMode = isDaily;
+    btnDaily.classList.toggle("active", isDailyMode);
+    btnRandom.classList.toggle("active", !isDailyMode);
+    clueFeedback.textContent = isDailyMode
+      ? "📅 Daily mode activated"
+      : "🎲 Random mode activated";
     startNewGame();
+  }
+
+
+  btnDaily.addEventListener("click", (e) => {
+  e.target.blur(); // remove focus so Enter won't re-trigger
+  isDailyMode = true;
+  startNewGame();
   });
+
+
+  btnRandom.addEventListener("click", (e) => {
+  e.target.blur(); // remove focus
+  isDailyMode = false;
+  startNewGame();
+  });
+
+  btnDaily.addEventListener("click", () => setMode(true));
+  btnRandom.addEventListener("click", () => setMode(false));
+
+  // Initialize mode on load
+  setMode(true);
 
   // ===========================
   // 🔁 Game Initialization
   // ===========================
   newGameBtn.addEventListener("click", startNewGame);
-  if (wordLengthSelector) wordLengthSelector.value = "5";
-
   createEmptyGrid();
   updateScoreDisplay();
 });
