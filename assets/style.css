@@ -748,6 +748,62 @@ ul {
   #sidebar {
     display: none !important;
   }
+
+  #leaderboard-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 13, 26, 0.95);
+  display: none; /* hidden by default */
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+#leaderboard-modal .modal-content {
+  background: #1a1a2e;
+  padding: 20px;
+  border-radius: 8px;
+  color: #fff;
+  max-width: 90%;
+  text-align: center;
+}
+
+
+  #leaderboard-modal,
+#modal-overlay,
+#dynamic-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #0d0d1a;
+  color: #fff;
+  z-index: 999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+
+#history-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(13, 13, 26, 0.95);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
 }
 
 /* ==========================================================

@@ -672,4 +672,76 @@ window.addEventListener("DOMContentLoaded", () => {
     keyboard.style.display = "none";
     newGameBtn.classList.add("hidden");
   }
+
+
+
+// ===========================
+// 🧩 Modal Toggle Logic
+// ===========================
+
+// DOM references
+const leaderboardModal = document.getElementById("leaderboard-modal");
+const dynamicPanel = document.getElementById("dynamic-panel");
+const howtoModal = document.getElementById("modal-overlay");
+
+const btnLeaderboard = document.getElementById("btn-leaderboard");
+const btnPoints = document.getElementById("btn-points");
+const btnHowto = document.getElementById("btn-howto");
+
+const skipNameBtn = document.getElementById("skip-name-btn");
+const closeHowtoBtn = document.getElementById("close-modal");
+
+// Show Leaderboard modal
+btnLeaderboard.addEventListener("click", () => {
+  leaderboardModal.classList.remove("hidden");
+});
+
+// Hide Leaderboard modal
+skipNameBtn.addEventListener("click", () => {
+  leaderboardModal.classList.add("hidden");
+});
+
+// Show Game History (dynamic panel)
+btnPoints.addEventListener("click", () => {
+  dynamicPanel.classList.remove("hidden");
+  dynamicPanel.innerHTML = `
+    <h2>Game History</h2>
+    <p>Your recent games will appear here.</p>
+    <button class="nav-btn" id="close-history">Close</button>
+  `;
+
+  // Add close button logic dynamically
+  document.getElementById("close-history").addEventListener("click", () => {
+    dynamicPanel.classList.add("hidden");
+    dynamicPanel.innerHTML = ""; // clean up
+  });
+});
+
+// Show How to Play modal
+btnHowto.addEventListener("click", () => {
+  howtoModal.classList.remove("hidden");
+});
+
+// Hide How to Play modal
+closeHowtoBtn.addEventListener("click", () => {
+  howtoModal.classList.add("hidden");
+});
+
+
+ btnLeaderboard.addEventListener("click", () => {
+    leaderboardModal.style.display = "flex";
+  });
+
+  skipNameBtn.addEventListener("click", () => {
+    leaderboardModal.style.display = "none";
+  });
+
+  btnPoints.addEventListener("click", () => {
+    document.getElementById("history-modal").style.display = "flex";
+  });
+
+  document.getElementById("close-history").addEventListener("click", () => {
+    document.getElementById("history-modal").style.display = "none";
+  });
+
 });
