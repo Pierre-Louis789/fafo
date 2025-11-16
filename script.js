@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnDaily = document.getElementById("btn-daily");
   const btnRandom = document.getElementById("btn-random");
 
-  
+
 
   // ===========================
   // 📅 Daily Puzzle Tracking
@@ -613,4 +613,63 @@ restartBtn.addEventListener("click", () => {
   newGameBtn.addEventListener("click", startNewGame);
   createEmptyGrid();
   updateScoreDisplay();
+});
+
+
+// ===========================
+// 📱 Mobile Game Flow Logic
+// ===========================
+
+const introScreen = document.getElementById("intro-screen");
+const topNav = document.getElementById("top-nav");
+const modeSelect = document.getElementById("mode-select");
+const gameGrid = document.getElementById("game-grid");
+const keyboard = document.getElementById("keyboard");
+const newGameBtn = document.getElementById("new-game-btn");
+const dailyBtn = document.getElementById("btn-daily");
+const randomBtn = document.getElementById("btn-random");
+
+function isMobileView() {
+  return window.innerWidth <= 768;
+}
+
+// Step 1 → Step 2: Show mode select
+document.getElementById("start-btn").addEventListener("click", () => {
+  if (!isMobileView()) return;
+
+  introScreen.classList.add("hidden");
+  topNav.style.display = "flex";
+  modeSelect.style.display = "flex";
+
+  gameGrid.style.display = "none";
+  keyboard.style.display = "none";
+  newGameBtn.classList.add("hidden");
+});
+
+// Step 2 → Step 3: Launch game
+function launchGame(mode) {
+  if (!isMobileView()) return;
+
+  modeSelect.style.display = "none";
+  gameGrid.style.display = "grid";
+  keyboard.style.display = "flex";
+  newGameBtn.classList.remove("hidden");
+
+  isDailyMode = mode === "daily";
+  startNewGame();
+}
+
+dailyBtn.addEventListener("click", () => launchGame("daily"));
+randomBtn.addEventListener("click", () => launchGame("random"));
+
+// On load: show intro only on mobile
+window.addEventListener("DOMContentLoaded", () => {
+  if (isMobileView()) {
+    introScreen.classList.remove("hidden");
+    topNav.style.display = "none";
+    modeSelect.style.display = "none";
+    gameGrid.style.display = "none";
+    keyboard.style.display = "none";
+    newGameBtn.classList.add("hidden");
+  }
 });

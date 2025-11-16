@@ -9,31 +9,44 @@
   <!-- Preload optional arcade font if you want -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
-  <audio id="bg-music" src="assets/sounds/pinball-hall-of-fame-3-33581.mp3"loop></audio>
+  <audio id="bg-music" src="assets/sounds/pinball-hall-of-fame-3-33581.mp3" loop></audio>
   <link rel="icon" href="data:,">
+
 </head>
+
 <body>
+
   <div id="app-wrapper">
     <!-- Intro screen -->
     <div id="intro-screen" aria-labelledby="intro-title">
       <h1 id="intro-title" class="brand-title">🕵️ Fuck Around and Find Out</h1>
-      <p class="brand-tagline">A word deduction game</p>
+      <p class="brand-tagline">
+        <h2 id="modal-title">How to Play</h2>
+        <p>Guess the word in 6 tries</p>
+        <ul>
+          <li><span class="legend correct">🟩</span> Correct letter, correct position</li>
+          <li><span class="legend present">🟨</span> Correct letter, wrong position</li>
+          <li><span class="legend absent">⬜️</span> Letter not in word</li>
+        </ul>
+      </p>
 
       <div class="intro-actions">
-        <button id="start-btn" class="btn btn-primary btn-xl">▶ Start game</button>
+        <button id="start-btn" class="btn btn-primary btn-xl">▶ Continue</button>
         <div class="intro-secondary">
           <button id="sound-toggle" class="btn btn-ghost">🔊 Sound On/Off</button>
-          <button id="intro-howto" class="btn btn-ghost">❓ How to play</button>
+          
         </div>
       </div>
     </div>
+
+
+
 
     <!-- Header -->
     <header id="main-header" role="banner">
       <h1 class="brand-title small">🕵️ Fuck Around and Find Out</h1>
       <div id="meta-bar" aria-live="polite">
         <span id="date-time">🗓️ Loading...</span>
-        <span id="weather" aria-hidden="true">🌦️ Weather: --</span>
       </div>
     </header>
 
@@ -65,11 +78,13 @@
           <button class="key" data-key="A">A</button><button class="key" data-key="S">S</button><button class="key" data-key="D">D</button><button class="key" data-key="F">F</button><button class="key" data-key="G">G</button><button class="key" data-key="H">H</button><button class="key" data-key="J">J</button><button class="key" data-key="K">K</button><button class="key" data-key="L">L</button>
         </div>
         <div class="key-row" aria-label="Bottom row keys">
-          <button class="key wide" data-key="Enter">Enter</button>
           <button class="key" data-key="Z">Z</button><button class="key" data-key="X">X</button><button class="key" data-key="C">C</button><button class="key" data-key="V">V</button><button class="key" data-key="B">B</button><button class="key" data-key="N">N</button><button class="key" data-key="M">M</button>
-          <button class="key wide" data-key="Backspace">⌫</button>
         </div>
       </section>
+      <div class="key-row" aria-label="Bottom row keys">
+      <button class="key wide" data-key="Backspace">⌫</button>
+      <button class="key wide" data-key="Enter">Enter</button>
+      </div>
     </main>
 
     <!-- Sidebar -->
