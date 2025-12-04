@@ -19,11 +19,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnPoints = document.getElementById("btn-points");
   const closeLeaderboard = document.getElementById("close-leaderboard");
   const closeHistory = document.getElementById("close-history");
+  const closeStats = document.getElementById("close-stats");
+  const btnStats = document.getElementById("btn-stats");
+  const statsOverlay = document.getElementById("stats-overlay");
+  const statsContent = document.getElementById("stats-content");
+
 
   // How to Play modal
-  const modalOverlay = document.getElementById("modal-overlay");
   const btnHowto = document.getElementById("btn-howto");
-  const closeModal = document.getElementById("close-modal");
+  const howtoOverlay = document.getElementById("howto-overlay");
+  const closeHowto = document.getElementById("close-howto");
 
   // Clues (desktop + mobile)
   const clueButtons = document.querySelectorAll(".clue-btn");
@@ -154,6 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let targetWord = getDailyWord().toUpperCase();
   let score = parseInt(localStorage.getItem("score")) || 0;
   let streak = parseInt(localStorage.getItem("streak")) || 0;
+  let bestStreak = parseInt(localStorage.getItem("bestStreak") || "0", 10);
   const rewardedYellows = new Set();
   const rewardedGreens = new Set();
   let gameOver = false;
@@ -343,6 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // 📊 Player Data & Results
 // ===========================
 
+// Load leaderboard and history
 let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
 leaderboard = leaderboard.slice(0, 5); // keep top 5
 
@@ -350,40 +357,52 @@ let history = JSON.parse(localStorage.getItem("history")) || [];
 history = history.slice(-5); // keep last 5
 
 
+// Save result after each game
 function recordGameResult(word, win, points, playerName = "Anonymous") {
+  // Add to history
   history.push({
     word,
     result: win ? "Win" : "Loss",
     points,
-    date: new Date().toLocaleString()
+    date: new Date().toLocaleString(),
+    mode: isDailyMode ? "Daily" : "Random"
   });
 
-
-  // Keep only the last 5 games
+  // Trim history
   if (history.length > 5) {
     history = history.slice(-5);
   }
 
+  // Update streak only in daily mode
+  if (isDailyMode) {
+    if (win) {
+      streak++;
+      bestStreak = Math.max(bestStreak, streak);
+      localStorage.setItem("bestStreak", bestStreak);
+      score += points;
 
-  if (win) {
-    streak++;
-    score += points;
+      if (playerName !== "Anonymous") {
+        localStorage.setItem("playerName", playerName);
+      }
 
-    if (playerName !== "Anonymous") {
-      localStorage.setItem("playerName", playerName);
+      // ✅ Leaderboard only in Daily mode
+      leaderboard.push({ name: playerName, score, streak });
+      leaderboard.sort((a, b) => b.score - a.score);
+      leaderboard = leaderboard.slice(0, 5);
+
+      localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+
+    } else {
+      streak = 0;
     }
-
-    // Add/update leaderboard entry
-    leaderboard.push({ name: playerName, score, streak });
-    leaderboard.sort((a, b) => b.score - a.score);
-    leaderboard = leaderboard.slice(0, 5); // ✅ keep top 5
-
-    localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
-  } else {
-    streak = 0;
   }
 
-  // Save trimmed history
+  // Update score and leaderboard only on win
+  if (win) {
+    score += points;
+  }
+
+  // Save history and update score display
   localStorage.setItem("history", JSON.stringify(history));
   updateScoreDisplay();
 }
@@ -394,11 +413,19 @@ function recordGameResult(word, win, points, playerName = "Anonymous") {
 
 function updateLeaderboard() {
   const container = document.getElementById("leaderboard-content");
+  const bestStreakDisplay = document.getElementById("best-streak");
+
+  //  Show best streak if the element exists
+  if (bestStreakDisplay) {
+    bestStreakDisplay.textContent = `Best Streak: ${bestStreak}`;
+  }
+
+  //  Render leaderboard only if daily mode is active
   container.innerHTML = leaderboard.length === 0
     ? "<p>No scores yet.</p>"
     : leaderboard.map((entry, i) => `
         <div class="leaderboard-card">
-          <h3>${i+1}. ${entry.name}</h3>
+          <h3>${i + 1}. ${entry.name}</h3>
           <span class="score">${entry.score} pts</span>
           ${entry.streak ? `<span class="streak">🔥 ${entry.streak}</span>` : ""}
         </div>
@@ -413,86 +440,218 @@ function updateHistory() {
   if (!historyContent) return;
 
   let arr = JSON.parse(localStorage.getItem("history")) || [];
-  arr = arr.slice(-5); // enforce last 5 on load too
+  arr = arr.slice(-5); // enforce last 5
 
   historyContent.innerHTML = arr.length === 0
     ? "<p>No games played yet.</p>"
     : arr.map(game => `
         <div class="history-card ${game.result === "Win" ? "win" : "loss"}">
           <h3>${game.result === "Win" ? "✅ Win" : "❌ Loss"}</h3>
-          <p>Word: ${game.word} • Points: ${game.points}</p>
+          <p>Word: ${game.word} • Game Attempts: ${game.attempts} • Points: ${game.points} • Mode: ${game.mode}</p>
           <span class="date">${game.date}</span>
         </div>
       `).join("");
 }
 
-
-
   // ===========================
-  // 🏆 Modal buttons
-  // ===========================
-  if (btnLeaderboard) {
-    btnLeaderboard.onclick = () => {
-      updateLeaderboard();
-      leaderboardOverlay.classList.remove("hidden");
-      leaderboardOverlay.classList.add("active");
-    };
-  }
-  if (btnPoints) {
-    btnPoints.onclick = () => {
-      updateHistory();
-      historyOverlay.classList.remove("hidden");
-      historyOverlay.classList.add("active");
-    };
-  }
+// 🏆 Modal buttons
+// ===========================
 
-  // ===========================
-  // 💾 Save & Restore Daily Grid
-  // ===========================
-  function saveDailyGrid() {
-    const rows = [];
-    document.querySelectorAll(".guess-row").forEach(row => {
-      const tiles = Array.from(row.querySelectorAll(".tile")).map(tile => ({
-        letter: tile.textContent,
-        state: tile.getAttribute("data-state")
-      }));
-      rows.push(tiles);
-    });
-    localStorage.setItem("dailyGrid", JSON.stringify(rows));
-    localStorage.setItem("dailyDate", new Date().toDateString());
-  }
+if (btnHowto && howtoOverlay) {
+  btnHowto.onclick = () => {
+    howtoOverlay.classList.remove("hidden");
+    howtoOverlay.classList.add("active");
+  };
+}
 
-  function restoreDailyGridIfPlayed() {
-    const savedDate = localStorage.getItem("dailyDate");
-    const today = new Date().toDateString();
+if (closeHowto && howtoOverlay) {
+  closeHowto.onclick = () => {
+    howtoOverlay.classList.add("hidden");
+    howtoOverlay.classList.remove("active");
+  };
+}
 
-    if (savedDate === today) {
-      const rows = JSON.parse(localStorage.getItem("dailyGrid")) || [];
-      if (!grid) return false;
-      grid.innerHTML = "";
-      rows.forEach(rowData => {
-        const rowDiv = document.createElement("div");
-        rowDiv.classList.add("guess-row");
-        rowData.forEach(tileData => {
-          const tile = document.createElement("div");
-          tile.classList.add("tile");
-          tile.textContent = tileData.letter;
-          tile.setAttribute("data-state", tileData.state || "empty");
-          rowDiv.appendChild(tile);
-        });
-        grid.appendChild(rowDiv);
-      });
-      showClue("📅 You've already played today's puzzle!");
-      gameOver = true;
-      return true;
+if (btnLeaderboard) {
+  btnLeaderboard.onclick = () => {
+    updateLeaderboard();
+    leaderboardOverlay.classList.remove("hidden");
+    leaderboardOverlay.classList.add("active");
+  };
+}
+
+if (btnPoints) {
+  btnPoints.onclick = () => {
+    updateHistory();
+    historyOverlay.classList.remove("hidden");
+    historyOverlay.classList.add("active");
+  };
+}
+
+
+// ===========================
+// 📊 Stats Modal
+// ===========================
+
+// Guard checks with debug logs
+if (!btnStats) console.warn("Stats button #btn-stats not found in DOM");
+if (!statsOverlay) console.warn("Stats overlay #stats-overlay not found in DOM");
+if (!statsContent) console.warn("Stats content #stats-content not found in DOM");
+if (!closeStats) console.warn("Close stats button #close-stats not found in DOM");
+
+// Open stats modal
+if (btnStats) {
+  btnStats.addEventListener("click", () => {
+    // Update content
+    updateStatsModal();
+
+    // Show overlay
+    if (statsOverlay) {
+      statsOverlay.classList.remove("hidden");
+      statsOverlay.classList.add("active");
     }
-    return false;
+  });
+}
+
+// Close stats modal
+if (closeStats) {
+  closeStats.addEventListener("click", () => {
+    if (statsOverlay) {
+      statsOverlay.classList.add("hidden");
+      statsOverlay.classList.remove("active");
+    }
+  });
+}
+
+function updateStatsModal() {
+  const arr = JSON.parse(localStorage.getItem("history")) || [];
+
+  const gamesPlayed = arr.length;
+  const wins = arr.filter(g => g.result === "Win").length;
+  const winPercent = gamesPlayed > 0 ? Math.round((wins / gamesPlayed) * 100) : 0;
+
+  // Current streak (from the end)
+  let currentStreak = 0;
+  for (let i = arr.length - 1; i >= 0; i--) {
+    if (arr[i].result === "Win") currentStreak++;
+    else break;
   }
 
-  function saveGameResult(win, attempts, scoreEarned) {
+  // Best streak (longest run)
+  let bestStreakCalc = 0;
+  let tempStreak = 0;
+  arr.forEach(g => {
+    if (g.result === "Win") {
+      tempStreak++;
+      bestStreakCalc = Math.max(bestStreakCalc, tempStreak);
+    } else {
+      tempStreak = 0;
+    }
+  });
+
+  // Guess distribution 1–6
+  const distribution = [0, 0, 0, 0, 0, 0];
+  arr.forEach(g => {
+    if (g.result === "Win" && g.attempts >= 1 && g.attempts <= 6) {
+      distribution[g.attempts - 1]++;
+    }
+  });
+
+  // Render proportional bars
+  const maxCount = Math.max(...distribution, 1);
+  statsContent.innerHTML = `
+    <div class="stats-grid">
+      <div><strong>Games Played</strong><br>${gamesPlayed}</div>
+      <div><strong>Win %</strong><br>${winPercent}%</div>
+      <div><strong>Current Streak</strong><br>${currentStreak}</div>
+      <div><strong>Best Streak</strong><br>${bestStreakCalc}</div>
+    </div>
+
+    <h3>Guess Distribution</h3>
+    <div class="guess-distribution">
+      ${distribution.map((count, i) => `
+        <div class="guess-row">
+          <span class="guess-label">${i + 1}</span>
+          <div class="guess-bar">
+            <div class="bar-fill" style="width:${(count / maxCount) * 100}%">
+              ${count}
+            </div>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `;
+
+
+
+  
+  statsOverlay.classList.remove("hidden");
+  statsOverlay.classList.add("active");
+}
+
+// ===========================
+// 📊 Stats Modal Button
+// ===========================
+if (btnStats) {
+  btnStats.onclick = () => {
+    updateStatsModal();
+  };
+}
+
+  // ===========================
+// 💾 Save & Restore Daily Grid
+// ===========================
+
+function saveDailyGrid() {
+  const rows = [];
+  document.querySelectorAll(".guess-row").forEach(row => {
+    const tiles = Array.from(row.querySelectorAll(".tile")).map(tile => ({
+      letter: tile.textContent,
+      state: tile.getAttribute("data-state")
+    }));
+    rows.push(tiles);
+  });
+
+  localStorage.setItem("dailyGrid", JSON.stringify(rows));
+  localStorage.setItem("dailyDate", new Date().toDateString());
+}
+
+function restoreDailyGridIfPlayed() {
+  const savedDate = localStorage.getItem("dailyDate");
+  const today = new Date().toDateString();
+
+  if (savedDate === today) {
+    const rows = JSON.parse(localStorage.getItem("dailyGrid")) || [];
+    if (!grid) return false;
+
+    grid.innerHTML = "";
+    rows.forEach(rowData => {
+      const rowDiv = document.createElement("div");
+      rowDiv.classList.add("guess-row");
+      rowData.forEach(tileData => {
+        const tile = document.createElement("div");
+        tile.classList.add("tile");
+        tile.textContent = tileData.letter;
+        tile.setAttribute("data-state", tileData.state || "empty");
+        rowDiv.appendChild(tile);
+      });
+      grid.appendChild(rowDiv);
+    });
+
+    showClue("📅 You've already played today's puzzle!");
+    gameOver = true;
+    return true;
+  }
+
+  return false;
+}
+
+  // ===========================
+// 🧾 Save Game Result (Daily or Random)
+// ===========================
+
+function saveGameResult(win, attempts, scoreEarned) {
   const historyArr = JSON.parse(localStorage.getItem("gameHistory")) || [];
 
-  // Add the new result
   historyArr.push({
     date: new Date().toLocaleString(),
     win,
@@ -501,10 +660,7 @@ function updateHistory() {
     daily: isDailyMode
   });
 
-  // Keep only the last 5 entries
   const trimmed = historyArr.slice(-5);
-
-  // Save the trimmed array
   localStorage.setItem("gameHistory", JSON.stringify(trimmed));
 }
 
@@ -577,18 +733,7 @@ function updateHistory() {
   // ===========================
   // 📢 Modal Logic
   // ===========================
-  if (btnHowto) {
-    btnHowto.onclick = () => {
-      modalOverlay.classList.remove("hidden");
-      modalOverlay.classList.add("active");
-    };
-  }
-  if (closeModal) {
-    closeModal.onclick = () => {
-      modalOverlay.classList.remove("active");
-      modalOverlay.classList.add("hidden");
-    };
-  }
+  
 
   if (btnLeaderboard && leaderboardOverlay) {
     btnLeaderboard.addEventListener("click", () => {
@@ -632,65 +777,20 @@ function updateHistory() {
       }
     });
   }
-  if (modalOverlay) {
-    modalOverlay.addEventListener("click", e => {
-      if (e.target === modalOverlay) {
-        modalOverlay.classList.remove("active");
-        modalOverlay.classList.add("hidden");
-      }
-    });
-  }
-
-  // ===========================
-  // 🎬 Endgame Modal Logic
-  // ===========================
-  function showEndgameModal(win, word) {
-  const pointsEarned = win ? 10 : 0;
-  saveGameResult(win, currentRow + 1, pointsEarned);
-
-  const nameInput = document.getElementById("player-name-input");
-
-  if (win) {
-    endgameTitle.textContent = "🎉 You Won!";
-    endgameMessage.textContent = "Legend";
-    continueBtn.style.display = "inline-block";
-    continueBtn.textContent = "Continue";
-    restartBtn.style.display = "none";
-
-    // Show name input
-    if (nameInput) {
-      nameInput.style.display = "block";
-      // Pre-fill with stored name if available
-      const storedName = localStorage.getItem("playerName");
-      if (storedName) nameInput.value = storedName;
-    }
-  } else {
-    endgameTitle.textContent = " You Failed";
-    endgameMessage.textContent = `The word was: ${word}`;
-    continueBtn.style.display = "inline-block";
-    continueBtn.textContent = "Continue (20 pts)";
-    restartBtn.style.display = "inline-block";
-
-    // Hide name input
-    if (nameInput) nameInput.style.display = "none";
-  }
-
-  endgameOverlay.classList.remove("hidden");
-}
+  
 
    // ===========================
   // 🎬 Endgame Modal Logic
   // ===========================
   function showEndgameModal(win, word) {
   const pointsEarned = win ? 10 : 0;
-
   saveGameResult(win, currentRow + 1, pointsEarned);
 
   const nameInput = document.getElementById("player-name-input");
 
   if (win) {
     endgameTitle.textContent = "🎉 You Won!";
-    endgameMessage.textContent = "Legend!";
+    endgameMessage.textContent = "Legend !";
     continueBtn.style.display = "inline-block";
     continueBtn.textContent = "Continue";
     restartBtn.style.display = "none";
@@ -703,7 +803,7 @@ function updateHistory() {
       if (storedName) nameInput.value = storedName;
     }
   } else {
-    endgameTitle.textContent = "🕵️ You Failed";
+    endgameTitle.textContent = "👎 You Failed";
     endgameMessage.textContent = `The word was: ${word}`;
     continueBtn.style.display = "inline-block";
     continueBtn.textContent = "Continue (20 pts)";
@@ -735,7 +835,7 @@ function updateHistory() {
       updateScoreDisplay();
 
       // ✅ Save loss before continuing
-      recordGameResult(targetWord, false, 0, "Anonymous");
+      recordGameResult(targetWord, false, 0, playerName);
 
       endgameOverlay.classList.add("hidden");
       startNewGame();
@@ -748,7 +848,7 @@ function updateHistory() {
       restartBtn.classList.add("attention");
 
       // ✅ Save loss when player cannot continue
-      recordGameResult(targetWord, false, 0, "Anonymous");
+      recordGameResult(targetWord, false, 0, playerName);
     }
   }
 });
@@ -822,13 +922,7 @@ function updateHistory() {
       } else if (type === "reveal-random") {
         const r = Math.floor(Math.random() * targetWord.length);
         message = `Random letter: ${targetWord[r]} (pos ${r + 1})`;
-      } else if (type === "reveal-vowel") {
-        const vowels = ["A", "E", "I", "O", "U"];
-        const found = [...targetWord].filter(ch => vowels.includes(ch));
-        message = found.length
-          ? `Vowel present: ${found[Math.floor(Math.random() * found.length)]}`
-          : "No vowels present.";
-      }
+      } 
 
       showClue(message || "No clue available.");
     });
@@ -837,20 +931,33 @@ function updateHistory() {
   // ===========================
   // 📅 Mode Toggle (Daily vs Random)
   // ===========================
+
   function setMode(isDaily) {
     isDailyMode = isDaily;
-    if (btnDaily) btnDaily.classList.toggle("active", isDailyMode);
-    if (btnRandom) btnRandom.classList.toggle("active", !isDailyMode);
+
+    // Toggle active button styles
+  if (btnDaily) btnDaily.classList.toggle("active", isDailyMode);
+  if (btnRandom) btnRandom.classList.toggle("active", !isDailyMode);
+
+  // Show mode message
     showClue(isDailyMode ? "📅 Daily mode activated" : "🎲 Random mode activated");
     startNewGame();
   }
 
-  if (btnDaily) {
-    btnDaily.addEventListener("click", e => { e.target.blur(); setMode(true); });
-  }
-  if (btnRandom) {
-    btnRandom.addEventListener("click", e => { e.target.blur(); setMode(false); });
-  }
+  // Mode toggle buttons
+if (btnDaily) {
+  btnDaily.addEventListener("click", e => {
+    e.target.blur();
+    setMode(true);
+  });
+}
+if (btnRandom) {
+  btnRandom.addEventListener("click", e => {
+    e.target.blur();
+    setMode(false);
+  });
+}
+
 
   // Intro → launch selected mode
   if (startBtn) {
