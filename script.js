@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // How to Play modal
   const btnHowto = document.getElementById("btn-howto");
-  const howtoOverlay = document.getElementById("howto-overlay");
-  const closeHowto = document.getElementById("close-howto");
+  const howtoScreen = document.getElementById("howto-screen");
+  const closeHowtoScreen = document.getElementById("close-howto-screen")
 
   // Clues (desktop + mobile)
   const clueButtons = document.querySelectorAll(".clue-btn");
@@ -457,18 +457,20 @@ function updateHistory() {
 // 🏆 Modal buttons
 // ===========================
 
-if (btnHowto && howtoOverlay) {
+if (btnHowto && howtoScreen) {
   btnHowto.onclick = () => {
-    howtoOverlay.classList.remove("hidden");
-    howtoOverlay.classList.add("active");
-  };
+  howtoScreen.classList.remove("hidden");
+  introScreen.classList.add("hidden");
+  topNav.classList.add("hidden");
+};
+
 }
 
-if (closeHowto && howtoOverlay) {
-  closeHowto.onclick = () => {
-    howtoOverlay.classList.add("hidden");
-    howtoOverlay.classList.remove("active");
-  };
+if (closeHowtoScreen && howtoScreen) {
+  closeHowtoScreen.onclick = () => {
+  howtoScreen.classList.add("hidden");
+  topNav.classList.remove("hidden");
+};
 }
 
 if (btnLeaderboard) {
@@ -560,10 +562,10 @@ function updateStatsModal() {
   const maxCount = Math.max(...distribution, 1);
   statsContent.innerHTML = `
     <div class="stats-grid">
-      <div><strong>Games Played</strong><br>${gamesPlayed}</div>
+      <div><strong>Games Played:</strong><br>${gamesPlayed}</div>
       <div><strong>Win %</strong><br>${winPercent}%</div>
-      <div><strong>Current Streak</strong><br>${currentStreak}</div>
-      <div><strong>Best Streak</strong><br>${bestStreakCalc}</div>
+      <div><strong>Current Streak:</strong><br>${currentStreak}</div>
+      <div><strong>Best Streak:</strong><br>${bestStreakCalc}</div>
     </div>
 
     <h3>Guess Distribution</h3>
@@ -844,7 +846,7 @@ function saveGameResult(win, attempts, scoreEarned) {
       streak = 0;
       updateScoreDisplay();
       showScoreFloat("❌ Streak Reset", "#ff4444", scoreDisplay);
-      endgameMessage.textContent = "Not enough points — you lost all your points!";
+      endgameMessage.textContent = "Not enough points!";
       restartBtn.classList.add("attention");
 
       // ✅ Save loss when player cannot continue
@@ -889,44 +891,60 @@ function saveGameResult(win, attempts, scoreEarned) {
     if (targetFB) targetFB.textContent = message;
   }
 
-  // Clue button logic
-  clueButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const cost = parseInt(btn.dataset.cost, 10);
-      const type = btn.dataset.type;
+  // 🕵️ Clue Purchase Logic
+clueButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    const cost = parseInt(btn.dataset.cost, 10);
+    const type = btn.dataset.type;
 
-      if (score < cost) {
-        showClue("❌ Not enough points!");
-        const targetFB = isMobileView() ? clueFeedbackMobile : clueFeedbackDesktop;
-        if (targetFB) {
-          targetFB.classList.add("shake");
-          setTimeout(() => targetFB.classList.remove("shake"), 600);
+    if (score < cost) {
+      showClue("❌ Not enough points!");
+      const targetFB = isMobileView() ? clueFeedbackMobile : clueFeedbackDesktop;
+      if (targetFB) {
+        targetFB.classList.add("shake");
+        setTimeout(() => targetFB.classList.remove("shake"), 600);
+      }
+      return;
+    }
+
+    score -= cost;
+    updateScoreDisplay();
+    showScoreFloat(-cost, "#ff4444", scoreDisplay);
+    sounds.clue?.play();
+
+    let message = "";
+
+    if (type === "reveal-position") {
+      const randIndex = Math.floor(Math.random() * targetWord.length);
+      message = `Position ${randIndex + 1}: ${targetWord[randIndex]}`;
+    } else if (type === "reveal-first") {
+      message = `First letter: ${targetWord[0]}`;
+    } else if (type === "reveal-last") {
+      message = `Last letter: ${targetWord[targetWord.length - 1]}`;
+    } else if (type === "reveal-random") {
+      const unrevealed = [];
+      for (let i = 0; i < targetWord.length; i++) {
+        const key = `tile-${i}`;
+        const tile = document.getElementById(key);
+
+        // Only include positions not marked correct
+        if (!tile || !tile.classList.contains("correct")) {
+          unrevealed.push(i);
         }
-        return;
       }
 
-      score -= cost;
-      updateScoreDisplay();
-      showScoreFloat(-cost, "#ff4444", scoreDisplay);
-      sounds.clue?.play();
-
-      let message = "";
-
-      if (type === "reveal-position") {
-        const randIndex = Math.floor(Math.random() * targetWord.length);
-        message = `Position ${randIndex + 1}: ${targetWord[randIndex]}`;
-      } else if (type === "reveal-first") {
-        message = `First letter: ${targetWord[0]}`;
-      } else if (type === "reveal-last") {
-        message = `Last letter: ${targetWord[targetWord.length - 1]}`;
-      } else if (type === "reveal-random") {
-        const r = Math.floor(Math.random() * targetWord.length);
+      if (unrevealed.length === 0) {
+        message = "✅ All letters already revealed!";
+      } else {
+        const r = unrevealed[Math.floor(Math.random() * unrevealed.length)];
         message = `Random letter: ${targetWord[r]} (pos ${r + 1})`;
-      } 
+      }
+    }
 
-      showClue(message || "No clue available.");
-    });
+    showClue(message || "No clue available.");
   });
+});
+
 
   // ===========================
   // 📅 Mode Toggle (Daily vs Random)

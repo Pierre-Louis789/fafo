@@ -54,6 +54,7 @@
     <nav id="top-nav" aria-label="Main navigation">
       <button class="nav-btn" id="btn-howto">❓ How to Play</button>
       <button class="nav-btn" id="btn-leaderboard">🏆 Leaderboard</button>
+      <button class="nav-btn" id="btn-stats">📊 Stats</button>
       <button class="nav-btn" id="btn-points">💰 Game History</button>
       <div id="mode-toggle" class="mode toggle" role="group" aria-label="Game mode">
         <button class="nav-btn" id="btn-daily">📅 Daily</button>
@@ -127,7 +128,7 @@
   <div class="popup-content">
     <h2 id="clue-title">🔮 Buy a Clue</h2>
     <button class="clue-btn" data-cost="10" data-type="reveal-position">
-      <span>Reveal 1 Letter</span>
+      <span>Reveal a random Letter</span>
       <span class="cost">10 pts</span>
     </button>
     <button class="clue-btn" data-cost="10" data-type="reveal-first">
@@ -147,25 +148,71 @@
 
 
     <!-- How to Play modal -->
-    <div id="howto-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="howto-title">
-      <div class="modal-content">
-        <h2 id="modal-title">How to Play</h2>
-        <p>Guess the word in 6 tries. Each guess gives feedback:</p>
-        <ul>
-          <li><span class="legend correct">🟩</span> Correct letter, correct position</li>
-          <li><span class="legend present">🟨</span> Correct letter, wrong position</li>
-          <li><span class="legend absent">⬜️</span> Letter not in word</li>
-        </ul>
-        <button id="close-howto" class="modal-close">Close</button>
-      </div>
-    </div>
+     <div id="howto-screen" class="intro-screen hidden" aria-labelledby="howto-title">
+  <h1 id="howto-title" class="brand-title">❓ How to Play</h1>
+  <div class="brand-tagline">
+    <p>Guess the word, earn points, unlock clues, and climb the leaderboard.</p>
+  </div>
+  <br>
+<section class="modal-section">
+  <h3>🎯 Objective</h3>
+  <p>Guess the hidden word in 6 tries. Each guess gives feedback:</p>
+  <ul class="legend-list">
+    <li><span class="legend correct">🟩</span> Correct letter, correct position</li>
+    <li><span class="legend present">🟨</span> Correct letter, wrong position</li>
+    <li><span class="legend absent">⬜️</span> Letter not in word</li>
+  </ul>
+</section>
+
+<section class="modal-section">
+  <h3>🔮 Clues</h3>
+  <p>Spend points to reveal hints:</p>
+  <ul>
+    <li><strong>Reveal 1 Letter</strong> – shows a random unrevealed letter in its correct position.</li>
+    <li><strong>First / Last Letter</strong> – reveals the starting or ending letter.</li>
+    <li><strong>Random Letter</strong> – reveals a letter not already solved in the grid.</li>
+  </ul>
+  <p class="note">Clues cost points — use them wisely!</p>
+</section>
+
+<section class="modal-section">
+  <h3>🏆 Leaderboard</h3>
+  <ul>
+    <li>Ranks players by total points earned.</li>
+    <li>Gold, silver, bronze borders highlight top 3.</li>
+    <li>Your name and score are saved when you win.</li>
+  </ul>
+</section>
+
+<section class="modal-section">
+  <h3>📜 Game History</h3>
+  <ul>
+    <li>Tracks your wins and losses.</li>
+    <li>Helps you spot patterns and improve strategy.</li>
+  </ul>
+</section>
+
+<section class="modal-section">
+  <h3>📊 Stats</h3>
+  <ul>
+    <li><strong>Games Played</strong> – total rounds attempted.</li>
+    <li><strong>Win Rate</strong> – percentage of games won.</li>
+    <li><strong>Current Streak</strong> – consecutive wins.</li>
+    <li><strong>Best Streak</strong> – your longest winning streak.</li>
+  </ul>
+  <p>Includes a guess distribution chart showing how often you solve in 1–6 tries.</p>
+</section>
+ <div class="intro-actions">
+    <button id="close-howto-screen" class="btn btn-primary btn-xl">▶ Continue</button>
+  </div>
+</div>
+
 
 <!-- Leaderboard Modal -->
 <div id="leaderboard-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="leaderboard-title">
   <div class="modal-content">
     <h2 id="leaderboard-title">🏆 Leaderboard</h2>
     <div id="leaderboard-content"></div>
-    <button id="btn-stats" class="modal-action">📊 View Stats</button>
     <button id="close-leaderboard" class="modal-close">Close</button>
   </div>
 </div>
@@ -199,12 +246,12 @@
   </div>
 
   <!-- Endgame Overlay -->
-  <div id="endgame-overlay" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="endgame-title">
+  <div id="endgame-overlay" class="endgame-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="endgame-title">
     <div id="endgame-content">
       <h2 id="endgame-title"></h2>
       <p id="endgame-message"></p>
 
-      <!-- New player name input -->
+      <!-- Player name input -->
     <input id="player-name-input" type="text" placeholder="Enter your name" />
       <div class="endgame-buttons">
         <button id="continue-btn" class="nav-btn">Continue</button>

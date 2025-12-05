@@ -66,7 +66,7 @@ body {
   margin-top: 0.5rem;
   color: #a6ffe9;
   opacity: 0.9;
-  font-size: 0.95rem;
+  font-size: 1.55rem;
 }
 
 /* Intro actions */
@@ -458,6 +458,42 @@ body {
   display: none !important;
 }
 
+/* Modal sections How to Play */
+
+.modal-section {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.modal-section h3 {
+  color: #00f5d4;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.modal-section ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.5rem 0;
+}
+
+.modal-section ul li {
+  margin-bottom: 0.4rem;
+  color: #ddd;
+}
+
+.legend-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.note {
+  font-style: italic;
+  color: #aaa;
+  margin-top: 0.5rem;
+}
+
 /* ==========================================================
    📦 Shared Modal Content
    ========================================================== */
@@ -509,6 +545,39 @@ body {
 }
 
 #modal-overlay:focus-within { outline: 2px solid #00f5d4; }
+
+
+/* ==========================================================
+   📜 How to Play Screen
+   ========================================================== */
+
+#howto-screen {
+  /* Inherits everything from #intro-screen */
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(1200px 600px at 50% 50%, rgba(3,8,16,0.92), rgba(3,8,16,0.98));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2000;
+  text-align: center;
+  padding: 2rem;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+#howto-screen.hidden {
+  display: none;
+}
+
+.howto-content {
+  max-width: 600px;
+  text-align: left;
+  margin-top: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: #a6ffe9;
+}
 
 /* ==========================================================
    📜 Modal Overlays (How to Play, Leaderboard, History, Stats)
@@ -778,6 +847,38 @@ body {
   transition: background-color 0.2s ease;
 }
 .endgame-buttons #restart-btn:hover { background-color: #ff2e63; }
+
+/* ==========================================================
+   🧑‍💻 Player Name Input (Endgame)
+   ========================================================== */
+#player-name-input {
+  display: block;
+  margin: 15px auto 20px auto;
+  padding: 10px 16px;
+  width: 80%;
+  max-width: 300px;
+  font-size: 1.1rem;
+  font-family: 'Orbitron', sans-serif;
+  text-align: center;
+  color: #00f5d4;
+  background-color: #0d0d1a;
+  border: 2px solid #00f5d4;
+  border-radius: 8px;
+  box-shadow: 0 0 12px rgba(0, 245, 212, 0.3);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#player-name-input::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+#player-name-input:focus {
+  outline: none;
+  border-color: #ff2e63;
+  box-shadow: 0 0 12px #ff2e63;
+}
+
 
 /* ==========================================================
    ✨ Animations
