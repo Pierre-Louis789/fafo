@@ -16,34 +16,6 @@ F*FO is designed not only as a fun puzzle challenge but also as a demonstration 
 
 ---
 
-## 🎨 User Experience (UX)
-
-F*FO is designed to feel less like a static puzzle and more like stepping into an arcade.  
-Every interaction — from typing a letter to buying a clue — is crafted to be responsive, intuitive, and rewarding.
-
-### Immersive Atmosphere
-- **Cinematic feedback**: Tiles flip, shake, and glow to show accuracy, creating a sense of interaction with each guess.
-- **Floating score effects**: Points gained or spent animate on screen, reinforcing the arcade vibe.
-- **Background audio**: Music loops and sound effects punctuate actions, immersing players in a retro‑game mood.
-
-### Accessibility & Flow
-- **Keyboard + on‑screen input**: Players can type or tap, making the game equally smooth on desktop and mobile.
-- **Focus management**: Buttons blur after use, preventing accidental re‑triggers with Enter. The grid and keyboard are programmatically focusable, ensuring frustration‑free navigation.
-- **Responsive layout**: The interface adapts to mobile and desktop, with a dedicated clue popup for smaller screens.
-
-### Emotional Engagement
-- **Risk vs reward**: The clue purchase system forces players to make strategic choices, adding tension and excitement.
-- **Progress tracking**: Stats and history panels give players a sense of growth, motivating them to return daily.
-- **Arcade polish**: The combination of animations, audio, and scoring transforms a word puzzle into a game that feels alive.
-
-### Design Philosophy
-The UX was built around three guiding principles:
-1. **Clarity** — feedback is immediate and visually distinct.  
-2. **Accessibility** — no player should feel blocked by controls or navigation.  
-3. **Polish** — every detail, from button blur to modal transitions, contributes to a seamless, game‑like experience.
-
----
-
 ## 🎯 Objectives
 
 - **Engage players with efficient deduction mechanics**  
@@ -113,25 +85,139 @@ The UX was built around three guiding principles:
 
 ---
 
+## 🎨 User Experience (UX)
+
+F*FO is designed to feel less like a static puzzle and more like stepping into an arcade.  
+Every interaction — from typing a letter to buying a clue — is crafted to be responsive, intuitive, and rewarding.
+
+### Immersive Atmosphere
+- **Cinematic feedback**: Tiles flip, shake, and glow to show accuracy, creating a sense of interaction with each guess.
+- **Floating score effects**: Points gained or spent animate on screen, reinforcing the arcade vibe.
+- **Background audio**: Music loops and sound effects punctuate actions, immersing players in a retro‑game mood.
+
+### Accessibility & Flow
+**Accessibility**: Built with accessibility in mind — keyboard input, focus management, and ARIA support.
+
+### Emotional Engagement
+- **Risk vs reward**: The clue purchase system forces players to make strategic choices, adding tension and excitement.
+- **Progress tracking**: Stats and history panels give players a sense of growth, motivating them to return daily.
+- **Arcade polish**: The combination of animations, audio, and scoring transforms a word puzzle into a game that feels alive.
+
+### Design Philosophy
+The UX was built around three guiding principles:
+1. **Clarity** — feedback is immediate and visually distinct.  
+2. **Accessibility** — no player should feel blocked by controls or navigation.  
+3. **Polish** — every detail, from button blur to modal transitions, contributes to a seamless, game‑like experience.
+
+---
+
+## 📊 Stats
+
+The stats panel provides players with a snapshot of their overall performance.  
+It records and displays key metrics across all sessions:
+
+- **Games Played** — total number of rounds attempted.  
+- **Win Rate** — percentage of games successfully solved.  
+- **Current Streak** — number of consecutive wins in progress.  
+- **Best Streak** — longest winning streak achieved.  
+- **Guess Distribution** — a bar chart showing how often players solve the puzzle in 1–6 guesses.  
+
+### Guess Distribution Chart
+The chart is rendered as a horizontal bar graph, where each bar corresponds to the number of guesses taken to solve a word.  
+For example:
+- A tall bar under “3” means the player often solves in three guesses.  
+- A shorter bar under “6” means fewer games are solved at the last attempt.  
+
+This visualization helps players identify patterns in their deduction style and measure improvement over time.
+
+---
+
+## 📜 Game History
+
+The history panel records individual game outcomes, allowing players to review past performance in detail.  
+It includes:
+
+- **Date & Mode** — when the game was played and whether it was Daily or Random.  
+- **Target Word** — the hidden word for that round.  
+- **Result** — win or loss, with the number of guesses used.  
+- **Points Earned/Spent** — score changes based on correct guesses and clue purchases.  
+
+### History Log
+Games are listed chronologically, creating a timeline of progress.  
+This log helps players:
+- Spot trends (e.g., struggling with certain word patterns).  
+- Reflect on clue usage and scoring decisions.  
+- Track short‑term growth beyond the summary stats.  
+
+---
+
+### How It Works
+Both **Stats** and **History** are stored locally in the browser using `localStorage`.  
+This ensures data persists between sessions without requiring an account or server.  
+Charts are generated dynamically from stored values, updating automatically after each game.
+
+---
+
 ## 🛠️ Technologies
-- **HTML5 / CSS3** — semantic structure and retro arcade styling.  
-- **JavaScript (ES6)** — game logic, scoring, and clue system.  
-- **LocalStorage** — persistent stats and streaks.  
-- **Audio** — immersive background music and sound effects.  
+
+- **HTML5 / Semantic Structure**  
+  Used to build the foundation of the game interface. Elements like `<header>`, `<main>`, `<aside>`, and `<footer>` provide clarity and accessibility. ARIA roles and labels are applied to modals and navigation for screen reader support.
+
+- **CSS3 / Styling & Animations**  
+  Provides the retro arcade look and feel. CSS classes (`correct`, `present`, `absent`) trigger color changes and animations on tiles. Responsive design ensures smooth play across desktop and mobile. Transitions and keyframes add cinematic polish to feedback and overlays.
+
+- **JavaScript (ES6)**  
+  Powers the game logic:  
+  - Validates guesses against the word bank.  
+  - Updates tile states with feedback.  
+  - Tracks scoring and clue purchases.  
+  - Manages overlays (intro, clue popup, endgame).  
+  - Handles keyboard input and focus management.  
+  Modular functions keep the codebase scalable and easy to maintain.
+
+- **LocalStorage**  
+  Stores player stats and history directly in the browser. This includes games played, win rate, streaks, and guess distribution. Data persists between sessions without requiring a server or login.
+
+- **Audio API**  
+  Integrates background music and sound effects. Toggleable controls allow players to enable or disable sound. Audio feedback is tied to key actions (typing, submitting guesses, buying clues) to reinforce the arcade atmosphere.
+
+- **Responsive Design Techniques**  
+  Media queries and flexible layouts adapt the interface to different screen sizes. The clue popup and overlays are optimized for mobile play, ensuring usability across devices.
+
+- **Accessibility Practices**  
+  - `tabindex="-1"` applied to grid and keyboard for programmatic focus.  
+  - Buttons blur after use to prevent sticky Enter key behavior.  
+  - ARIA attributes (`aria-label`, `aria-modal`, `aria-live`) enhance screen reader compatibility.  
+  - Focus is restored to the keyboard after closing modals for seamless navigation.
+
+- **Word Bank Data Management**  
+  A large, alphabetically organized word list is stored in `wordBank.js`. This supports both daily puzzles (deterministic selection) and random mode (randomized selection). The structure ensures scalability and replayability.
+
+- **Overlay & Modal System**  
+  Implemented with HTML/CSS/JS to handle intro screen, clue popup, and endgame states. Each modal uses `role="dialog"` and traps focus to maintain accessibility standards.
+  
 
 ---
 
 ## 📂 Project Structure
 
--fafo/ ├── index.html     # Main game UI ├── assets/ │   ├── style.css     # Styling │   ├── sounds/       # Arcade sound effects │   └── images/       # Optional assets ├── script.js         # Game logic └── data/ └── wordBank.js   # Word list
+fafo/
+├── index.html          # Entry point for the game
+├── assets/             # Main game UI components
+│   └── images/         # Optional visual assets
+├── style.css           # Core styling and layout
+├── sounds/             # Arcade sound effects
+├── script.js           # Game logic and interactions
+└── data/
+    └── wordBank.js     # Word list for gameplay
 
 ---
 
 ## ♿ Accessibility
-- Keyboard input supported for all gameplay.  
-- Focus management ensures Enter key doesn’t “stick” to clue buttons.  
-- Containers (`#game-grid`, `#keyboard`) are focusable for smooth navigation.  
-- ARIA roles and labels used for modals, navigation, and live regions.  
+
+- **Keyboard + on‑screen input**: Players can type or tap, making the game equally smooth on desktop and mobile.
+- **Focus management**: Buttons blur after use, preventing accidental re‑triggers with Enter. The grid and keyboard are programmatically focusable, ensuring frustration‑free navigation.
+- **Responsive layout**: The interface adapts to mobile and desktop, with a dedicated clue popup for smaller screens.  
 
 ---
 
