@@ -1,9 +1,13 @@
-# 🕵️ F‑*‑F‑O  
+# 🕵️ F‑A‑F‑O  
+
 **F*ck Around and Find Out — an immersive word deduction arcade game**
+
 
 ---
 
+
 ## 📖 Overview
+
 F‑A‑F‑O (F*ck Around and Find Out) is an immersive word deduction arcade game that blends the logic of classic word puzzles with the energy of retro arcade design. Players attempt to solve a hidden five‑letter word within six guesses, earning points for correct attempts and spending them strategically on clues.  
 
 The project emphasizes:
@@ -14,7 +18,9 @@ The project emphasizes:
 
 F*FO is designed not only as a fun puzzle challenge but also as a demonstration of modular game architecture, accessible UI/UX, and editorial polish in web development.
 
+
 ---
+
 
 ## 🎯 Objectives
 
@@ -30,7 +36,9 @@ F*FO is designed not only as a fun puzzle challenge but also as a demonstration 
 - **Track progress for replayability and growth**  
   Stats and history panels record games played, win rate, streaks, and guess distribution. This data helps players see improvement over time, identify patterns in their play, and stay motivated to return daily or explore random mode challenges.
 
+
 ---
+
 
 ## 🕹️ Gameplay
 
@@ -56,7 +64,9 @@ F*FO is designed not only as a fun puzzle challenge but also as a demonstration 
 6. **Win by solving within six tries**  
    The objective is to uncover the hidden word within six attempts. If the player succeeds, the endgame overlay displays a victory message and records the result in the stats/history system. If they fail, the overlay reveals the target word and updates the loss record. This win/lose logic was coded to trigger once the current row counter reaches six or the word is correctly guessed.
 
+
 ---
+
 
 ## ✨ Features
 
@@ -64,7 +74,7 @@ F*FO is designed not only as a fun puzzle challenge but also as a demonstration 
   A new puzzle is generated each day, giving players a fresh challenge and encouraging regular play. This mode resets automatically based on the system date, ensuring everyone faces the same daily word.
 
 - **Random Mode**  
-  For unlimited practice and replayability, players can launch random puzzles at any time. This mode uses the word bank to select a word at random, making each round unique and unpredictable.
+  For unlimited practice and replayability, players can launch random puzzles at any time. This mode uses the word bank to select a word at random in dictionary.txt, making each round unique and unpredictable.
 
 - **Clue Purchase System**  
   Points earned during gameplay can be spent to reveal helpful hints. Options include uncovering a random unrevealed letter, the first letter, or the last letter of the target word. Each clue has a cost defined in the button’s `data-cost` attribute, and the system deducts points before displaying the hint. This mechanic adds a layer of strategy, forcing players to balance risk and reward.
@@ -83,12 +93,17 @@ F*FO is designed not only as a fun puzzle challenge but also as a demonstration 
   - ARIA labels and roles are applied to modals, navigation, and live regions to support screen readers.  
   Combined, these features make FAFO frustration‑free and inclusive for all players.
 
+
+
 ---
 
-## 🎨 User Experience (UX)
 
-F*FO is designed to feel less like a static puzzle and more like stepping into an arcade.  
-Every interaction — from typing a letter to buying a clue — is crafted to be responsive, intuitive, and rewarding.
+
+## 🎨 User Experience
+
+
+FAFO is designed to feel less like a static puzzle and more like stepping into an arcade.  
+Every interaction, from typing a letter to buying a clue, is crafted to be responsive, intuitive, and rewarding.
 
 ### Immersive Atmosphere
 - **Cinematic feedback**: Tiles flip, shake, and glow to show accuracy, creating a sense of interaction with each guess.
@@ -109,7 +124,9 @@ The UX was built around three guiding principles:
 2. **Accessibility** — no player should feel blocked by controls or navigation.  
 3. **Polish** — every detail, from button blur to modal transitions, contributes to a seamless, game‑like experience.
 
+
 ---
+
 
 ## 📊 Stats
 
@@ -130,7 +147,9 @@ For example:
 
 This visualization helps players identify patterns in their deduction style and measure improvement over time.
 
+
 ---
+
 
 ## 📜 Game History
 
@@ -149,26 +168,27 @@ This log helps players:
 - Reflect on clue usage and scoring decisions.  
 - Track short‑term growth beyond the summary stats.  
 
----
 
 ### How It Works
 Both **Stats** and **History** are stored locally in the browser using `localStorage`.  
 This ensures data persists between sessions without requiring an account or server.  
 Charts are generated dynamically from stored values, updating automatically after each game.
 
----
 
-## 🛠️ Technologies
+-----
+
+
+# 🛠️ Technologies
 
 - **HTML5 / Semantic Structure**  
-  Used to build the foundation of the game interface. Elements like `<header>`, `<main>`, `<aside>`, and `<footer>` provide clarity and accessibility. ARIA roles and labels are applied to modals and navigation for screen reader support.
+  Provides the foundation of the game interface. Elements like `<header>`, `<main>`, `<aside>`, and `<footer>` ensure clarity and accessibility. ARIA roles and labels are applied to modals and navigation for screen reader support.
 
 - **CSS3 / Styling & Animations**  
-  Provides the retro arcade look and feel. CSS classes (`correct`, `present`, `absent`) trigger color changes and animations on tiles. Responsive design ensures smooth play across desktop and mobile. Transitions and keyframes add cinematic polish to feedback and overlays.
+  Delivers the retro arcade look and feel. CSS classes (`correct`, `present`, `absent`) trigger color changes and animations on tiles. Responsive design ensures smooth play across desktop and mobile. Transitions and keyframes add cinematic polish to feedback and overlays.
 
 - **JavaScript (ES6)**  
   Powers the game logic:  
-  - Validates guesses against the word bank.  
+  - Validates guesses against the dictionary.  
   - Updates tile states with feedback.  
   - Tracks scoring and clue purchases.  
   - Manages overlays (intro, clue popup, endgame).  
@@ -190,44 +210,221 @@ Charts are generated dynamically from stored values, updating automatically afte
   - ARIA attributes (`aria-label`, `aria-modal`, `aria-live`) enhance screen reader compatibility.  
   - Focus is restored to the keyboard after closing modals for seamless navigation.
 
-- **Word Bank Data Management**  
-  A large, alphabetically organized word list is stored in `wordBank.js`. This supports both daily puzzles (deterministic selection) and random mode (randomized selection). The structure ensures scalability and replayability.
+- **Dictionary & Word Bank Management**  
+  - `dictionary.txt` contains the full set of valid five‑letter words, acting as the **validation layer** for guesses.  
+  - `wordBank.js` loads words from the dictionary, uses them as both possible solutions and accepted guesses, and provides utility functions to fetch a random target word or validate input. This ensures consistent gameplay and replayability.
 
 - **Overlay & Modal System**  
   Implemented with HTML/CSS/JS to handle intro screen, clue popup, and endgame states. Each modal uses `role="dialog"` and traps focus to maintain accessibility standards.
-  
 
 ---
 
 ## 📂 Project Structure
 
+```plaintext
 fafo/
-├── index.html          # Entry point for the game
-├── assets/             # Main game UI components
-│   └── images/         # Optional visual assets
-├── style.css           # Core styling and layout
-├── sounds/             # Arcade sound effects
-├── script.js           # Game logic and interactions
-└── data/
-    └── wordBank.js     # Word list for gameplay
+├── index.html          # Main game UI and layout
+├── assets/             # Static assets for styling and media
+│   ├── style.css       # Core styles and arcade theme
+│   ├── sounds/         # Sound effects and background music
+│   └── images/         # Optional images, icons, or logos
+├── script.js           # Game logic, scoring, and UI interactions
+└── data/               # Word bank and dictionary data
+    ├── wordBank.js     # Utility functions for solutions and guess validation
+    └── dictionary.txt  # Full list of valid five‑letter words
+```
 
 ---
+
+
+## 📂 Project Structure — File Explanations
+
+- **index.html**  
+  Entry point of the game. Defines the grid, keyboard, overlays (intro, clue popup, endgame), and links to styles and scripts. Provides semantic structure and accessibility hooks (ARIA roles, labels).
+
+- **assets/style.css**  
+  Contains all visual styling: retro arcade theme, responsive layout, and animations. Classes like `correct`, `present`, and `absent` are applied dynamically to tiles for instant feedback.
+
+- **assets/sounds/**  
+  Houses audio files for background music and sound effects (typing, submitting guesses, clue purchases). Triggered by JavaScript events to reinforce the arcade atmosphere.
+
+- **assets/images/**  
+  Stores optional graphics such as logos, icons, or decorative assets. Keeps visuals modular and easy to swap or expand.
+
+- **script.js**  
+  Implements the core game logic: validating guesses, updating tile states, managing scoring and clue purchases, handling overlays, and ensuring accessibility (focus management, keyboard input). Functions are modular to keep the codebase scalable.
+
+- **data/dictionary.txt**  
+  Contains the complete set of valid five‑letter words. Used to validate player guesses and ensure fair play. Easy to expand, edit, or replace with larger language packs.
+
+- **data/wordBank.js**  
+  Loads words from the dictionary, uses them as both possible solutions and accepted guesses, and provides utility functions (`getRandomSolution`, `isValidGuess`). Supports both Daily Mode (deterministic selection) and Random Mode (randomized lookup).
+
+
+---
+
 
 ## ♿ Accessibility
 
-- **Keyboard + on‑screen input**: Players can type or tap, making the game equally smooth on desktop and mobile.
-- **Focus management**: Buttons blur after use, preventing accidental re‑triggers with Enter. The grid and keyboard are programmatically focusable, ensuring frustration‑free navigation.
-- **Responsive layout**: The interface adapts to mobile and desktop, with a dedicated clue popup for smaller screens.  
+FAFO was built with accessibility as a core priority, ensuring that every player can enjoy a frustration‑free experience across devices and input methods.
+
+### Keyboard & Input
+- Full keyboard support for gameplay: letters typed directly fill the grid.
+- On‑screen keys mirror keyboard input for mobile and touch users.
+- **Focus management**: buttons blur after use to prevent the Enter key from “sticking” and accidentally re‑triggering actions.
+
+### Screen Reader Support
+- ARIA roles and labels applied to modals, navigation, and live regions.
+- Overlays (intro, clue popup, endgame) use `role="dialog"` and trap focus until closed.
+- Dynamic feedback (tile states, score changes) announced via `aria-live` regions.
+
+### Layout & Responsiveness
+- Containers like the grid and keyboard are programmatically focusable (`tabindex="-1"`) for smooth navigation.
+- Responsive design adapts the interface for desktop and mobile, with dedicated clue popups optimized for smaller screens.
+
+### Inclusive Design Principles
+1. **Clarity** — feedback is immediate and visually distinct.  
+2. **Consistency** — input flows are predictable across keyboard and touch.  
+3. **Compatibility** — accessible markup ensures support for assistive technologies.  
+
+Accessibility isn’t an afterthought — it’s woven into the game’s logic, layout, and feedback systems to make FAFO inclusive and frustration‑free.
+
+
 
 ---
+
+
+## 🧪 Testing
+
+Testing FAFO ensures gameplay, accessibility, and performance remain consistent across devices and browsers. This section documents the methodology and results.
+
+---
+
+### 1. Functional Testing
+- **Game Logic**
+  - Verify guesses are validated against `dictionary.txt`.
+  - Confirm `wordBank.js` fetches words correctly from `dictionary.txt`.
+  - Confirm tile feedback (`correct`, `present`, `absent`) updates visually.
+  - Test scoring system: points awarded for correct guesses, deducted for clue purchases.
+  - Ensure overlays (intro, clue popup, endgame) trigger at the right times.
+
+Screenshot: ![Game Logic](/assets/images/screenshot-game-logic.png)
+
+- **Word Bank & Dictionary**
+  - Confirm `wordBank.js` fetches words correctly from `dictionary.txt`.
+  - Test `getRandomSolution()` returns a valid five‑letter word.
+  - Validate `isValidGuess()` rejects invalid entries and accepts dictionary words.
+
+<!-- 📸 Add screenshot of console log showing random solution + validation -->
+
+- **Stats & History**
+  - Check games played, win rate, streaks, and guess distribution update after each session.
+  - Verify persistence in `localStorage` across browser refreshes.
+
+Screenshot: ![StatsPanel](/assets/images/Screenshot-stats-panel.png)
+
+---
+
+### 2. Accessibility Testing
+- **Keyboard Navigation**
+  - Play the game entirely with keyboard input (no mouse).
+  - Confirm focus moves correctly between grid, keyboard, and overlays.
+  - Ensure Enter key does not “stick” to buttons after use.
+
+<!-- 📸 Add screenshot of focus outline on grid/keyboard -->
+
+- **Screen Reader Compatibility**
+  - Test with NVDA, JAWS, or VoiceOver.
+  - Verify ARIA roles (`dialog`, `aria-live`) announce overlays and dynamic feedback.
+  - Confirm score changes and tile states are announced clearly.
+
+<!-- 📸 Add screenshot of screen reader output or Lighthouse accessibility score -->
+
+- **Responsive Layout**
+  - Test on mobile, tablet, and desktop.
+  - Ensure clue popup adapts to small screens.
+  - Verify grid and keyboard remain usable at different viewport sizes.
+
+<!-- 📸 Add screenshot of mobile layout in Chrome DevTools -->
+
+---
+
+### 3. Performance Testing
+- **Load Times**
+  - Measure initial load of `index.html` and assets using Lighthouse.
+  - Confirm audio files don’t delay gameplay start.
+
+<!-- 📸 Add screenshot of Lighthouse performance score -->
+
+- **LocalStorage Stress Test**
+  - Simulate many games to confirm stats/history scale without corruption.
+  - Clear storage and retest to ensure reset works.
+
+<!-- 📸 Add screenshot of localStorage entries in DevTools -->
+
+---
+
+### 4. Cross‑Browser Testing
+Test in:
+- Chrome  
+- Firefox  
+- Safari (Mac/iOS)  
+- Edge  
+
+Check animations, audio, localStorage, and keyboard input. Document differences.
+
+<!-- 📸 Add screenshot table or notes comparing browsers -->
+
+---
+
+## 🧪 Testing with Jest
+
+FAFO uses **Jest** for unit and integration testing of its core game logic. This ensures that functions like word validation, random solution selection, and scoring behave consistently.
+
+### 1. Setup
+- Install Jest as a dev dependency:
+  ```bash
+  npm install --save-dev jest
+
+
+### 5. User Testing
+- Share the game link with peers.
+- Collect feedback on clarity, accessibility, and arcade feel.
+- Adjust animations, audio, and focus management based on feedback.
+
+<!-- 📸 Add screenshot or short summary of user feedback -->
+
+---
+
+### 6. Future Automated Testing
+- **Unit Tests** for utility functions (`getRandomSolution`, `isValidGuess`).
+- **Integration Tests** for game loop (guess → feedback → scoring → stats update).
+- **Accessibility Tests** with tools like Axe or Lighthouse.
+- **End‑to‑End Tests** using Cypress or Playwright to simulate full gameplay.
+
+---
+
+## 🧭 Testing Demarche (Approach)
+
+1. **Define Scope** — gameplay, accessibility, performance, cross‑browser.  
+2. **Prepare Environment** — VS Code + Live Server, multiple browsers, accessibility tools.  
+3. **Execute Tests** — run functional scenarios, accessibility flows, performance checks.  
+4. **Document Results** — add screenshots and notes directly in this section.  
+5. **Iterate & Improve** — apply fixes, rerun tests, refine polish.  
+6. **Validate with Users** — external play‑testing to confirm intuitive, accessible, fun gameplay.
+
+
 
 ## 🔮 Future Improvements
+
 - Add multiplayer or competitive modes.  
-- Expand word bank with difficulty levels.  
-- Enhance animations and sound effects for more arcade polish.  
+- Expand word bank with difficulty levels and numbers of letters.  
+- Enhance animations and sound effects for more arcade feeling.  
 - Implement leaderboards and social sharing.  
 
+
 ---
+
 
 ## Sounds
 
@@ -238,11 +435,10 @@ Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/
 ## 👨‍💻 Credits
 
 
-Built by Pierre with a focus on modularity, accessibility, and arcade polish.
+Built by Pierre with a focus on modularity, accessibility, and arcade adventure.
 
 ---
 
-## 📜 License
-This project is licensed under the MIT License — feel free to use, modify, and share.
+
 
 
