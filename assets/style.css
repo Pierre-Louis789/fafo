@@ -47,6 +47,7 @@ place-items: center;
 z-index: 2000;
 text-align: center;
 padding: 2rem;
+margin-bottom: 0.5rem;
 }
 #intro-screen.hidden { display: none; }
 
@@ -55,7 +56,7 @@ padding: 2rem;
 font-weight: 900;
 letter-spacing: 0.06em;
 text-transform: uppercase;
-color: #00f5d4;
+color: #66ffe0;
 text-shadow: 0 2px 12px rgba(0, 245, 212, 0.4), 0 0 2px #0ff;
 }
 .brand-title.small {
@@ -337,7 +338,7 @@ max-height: 80vh;
 }
 #score-panel {
 font-size: 1.2rem;
-color: #00f5d4;
+color: #66ffe0;
 text-align: center;
 position: relative;
 }
@@ -722,7 +723,7 @@ letter-spacing: 0.5px;
 .metric .value {
 font-size: 1.4rem;
 font-weight: bold;
-color: #00f5d4;
+color: #66ffe0;
 line-height: 1.4;
 display: flex;
 align-items: center;
@@ -908,7 +909,7 @@ to { opacity: 1; transform: scale(1); }
 grid-area: footer;
 text-align: center;
 font-size: 0.8rem;
-color: #0ff;
+color: #66ffe0;
 margin-top: 20px;
 }
 
@@ -1019,12 +1020,12 @@ position: fixed;
 top: 10px;
 right: 10px;
 background: #0d0d1a;
-color: #00f5d4;
+color: #66ffe0;
 padding: 8px 12px;
 border-radius: 6px;
 font-size: 1.1rem;
 z-index: 1000;
-box-shadow: 0 0 8px #00f5d4;
+box-shadow: 0 0 8px #66ffe0;
 }
 }
 
