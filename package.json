@@ -1,0 +1,18 @@
+{
+  "name": "wordle-game",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "description": "A Words game built with HTML, CSS, and JavaScript",
+  "main": "index.html",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Pierre Sicot",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "dependencies": {
+    "save-dev": "^0.0.1-security"
+  }
+}

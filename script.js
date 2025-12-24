@@ -364,7 +364,7 @@ function recordGameResult(word, win, points, attempts, playerName = "Anonymous")
 
   // Trim history
   if (history.length > 1000) {
-    history = history.slice(-5);
+    history = history.slice(-1000);
   }
 
   if (isDailyMode) {

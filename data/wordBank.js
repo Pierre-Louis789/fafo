@@ -27,3 +27,9 @@ fetch("data/dictionary.txt")
 export function isValidGuess(word) {
   return validGuesses.includes(word.toUpperCase());
 }
+export function isCorrectLength(word) {
+  return word.length === 5;
+}
+export function isValidWord(word) {
+  return solutionWords.includes(word.toUpperCase());
+}

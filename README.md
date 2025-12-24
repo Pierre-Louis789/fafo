@@ -223,15 +223,40 @@ Charts are generated dynamically from stored values, updating automatically afte
 
 ```plaintext
 fafo/
-├── index.html          # Main game UI and layout
-├── assets/             # Static assets for styling and media
-│   ├── style.css       # Core styles and arcade theme
-│   ├── sounds/         # Sound effects and background music
-│   └── images/         # Optional images, icons, or logos
-├── script.js           # Game logic, scoring, and UI interactions
-└── data/               # Word bank and dictionary data
-    ├── wordBank.js     # Utility functions for solutions and guess validation
-    └── dictionary.txt  # Full list of valid five‑letter words
+├── index.html              # Main game UI and layout
+├── script.js               # Game logic, scoring, and UI interactions
+├── style.css               # Core styles and arcade theme
+├── README.md               # Project documentation and testing notes
+├── package.json            # Project metadata and dependencies
+├── package-lock.json       # Dependency lock file
+├── jest.config.mjs         # Jest configuration
+│
+├── assets/                 # Static assets for styling and media
+│   ├── sounds/             # Sound effects and background music
+│   │   ├── funny-music.mp3
+│   │   └── pinball-hall-of-fame.mp3
+│   └── images/             # Optional images, icons, or logos
+│
+├── data/                   # Modular game logic and word data
+│   ├── dictionary.txt      # Full list of valid five-letter words
+│   ├── wordBank.js         # Word validation and solution selection
+│   ├── evaluateGuess.js    # Core guess evaluation logic
+│   ├── keyboardLogic.js    # Keyboard state update rules
+│   ├── rowLogic.js         # Tile input and deletion logic
+│   ├── scoringLogic.js     # Point system and streak handling
+│   └── statsEngine.js      # History, streaks, and distribution tracking
+│
+└── tests/                  # Jest test suites for all logic modules
+    ├── __mocks__/          # Mocks for isolated testing
+    │   └── wordbank.js
+    ├── evaluateGuess.test.js
+    ├── keyboardLogic.test.js
+    ├── rowLogic.test.js
+    ├── scoringLogic.test.js
+    ├── statsEngine.test.js
+    ├── validation.test.js
+    └── example.test.js
+
 ```
 
 ---
@@ -342,21 +367,35 @@ Website was tested using the WAVE Web Accessibility Evaluation Tool, Lighthouse 
 <!-- 📸 Add screenshot of mobile layout in Chrome DevTools -->
 
 ---
+## 🧪 Testing
 
-### 3. Performance Testing
-- **Load Times**
-  - Measure initial load of `index.html` and assets using Lighthouse.
-  - Confirm audio files don’t delay gameplay start.
+This project uses [Jest](https://jestjs.io/) for unit testing. All core game logic is extracted into pure functions and tested independently from the DOM.
 
-<!-- 📸 Add screenshot of Lighthouse performance score -->
+### ✅ Tested Modules
 
-- **LocalStorage Stress Test**
-  - Simulate many games to confirm stats/history scale without corruption.
-  - Clear storage and retest to ensure reset works.
+- `evaluateGuess.js` — guess evaluation logic
+- `keyboardLogic.js` — keyboard state updates
+- `rowLogic.js` — tile input and deletion
+- `scoringLogic.js` — point system and streaks
+- `statsEngine.js` — win/loss history, streak tracking, distribution
+- `validation.test.js` — word validation
+- `example.test.js` — sample test for setup
+---
 
-<!-- 📸 Add screenshot of localStorage entries in DevTools -->
+Screenshot : ![Tests folder](/assets/images/Screenshot-tests.png)
+---
+Screenshot : ![Data folder](/assets/images/Screenshot-data.png)
+---
+Screenshot : ![Jest testing](/assets/images/screenshot-jest-testing.png)
 
 ---
+
+### 🧪 How to Run Tests
+
+```bash
+npm install
+npm test
+```
 
 ### 4. Cross‑Browser Testing
 Test in:
@@ -367,46 +406,8 @@ Test in:
 
 Check animations, audio, localStorage, and keyboard input. Document differences.
 
-<!-- 📸 Add screenshot table or notes comparing browsers -->
 
 ---
-
-## 🧪 Testing with Jest
-
-FAFO uses **Jest** for unit and integration testing of its core game logic. This ensures that functions like word validation, random solution selection, and scoring behave consistently.
-
-### 1. Setup
-- Install Jest as a dev dependency:
-  ```bash
-  npm install --save-dev jest
-
-
-### 5. User Testing
-- Share the game link with peers.
-- Collect feedback on clarity, accessibility, and arcade feel.
-- Adjust animations, audio, and focus management based on feedback.
-
-<!-- 📸 Add screenshot or short summary of user feedback -->
-
----
-
-### 6. Future Automated Testing
-- **Unit Tests** for utility functions (`getRandomSolution`, `isValidGuess`).
-- **Integration Tests** for game loop (guess → feedback → scoring → stats update).
-- **Accessibility Tests** with tools like Axe or Lighthouse.
-- **End‑to‑End Tests** using Cypress or Playwright to simulate full gameplay.
-
----
-
-## 🧭 Testing Demarche (Approach)
-
-1. **Define Scope** — gameplay, accessibility, performance, cross‑browser.  
-2. **Prepare Environment** — VS Code + Live Server, multiple browsers, accessibility tools.  
-3. **Execute Tests** — run functional scenarios, accessibility flows, performance checks.  
-4. **Document Results** — add screenshots and notes directly in this section.  
-5. **Iterate & Improve** — apply fixes, rerun tests, refine polish.  
-6. **Validate with Users** — external play‑testing to confirm intuitive, accessible, fun gameplay.
-
 
 
 ## 🔮 Future Improvements
