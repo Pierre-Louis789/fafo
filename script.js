@@ -37,9 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeCluePopup = document.getElementById("close-clue-popup");
   const clueOpen = cluePopup && cluePopup.classList.contains("active");
 
-  // Name input 
-  const nameInput = document.getElementById("player-name-input");
-
   // Score panel
   const scorePanel = document.getElementById("score-panel");
 
@@ -81,11 +78,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔊 Sound Effects + Music
   // ===========================
   let soundOn = true;
-  const sounds = {
-    correct: new Audio("assets/sounds/correct.mp3"),
-    present: new Audio("assets/sounds/present.mp3"),
-    clue: new Audio("assets/sounds/clue.mp3"),
-  };
   function updateSoundButtons() {
     const label = soundOn ? "🔊 Sound On" : "🔇 Sound Off";
     if (introSoundToggle) introSoundToggle.textContent = label;
@@ -267,7 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (letter === targetArr[i]) {
         tiles[i].setAttribute("data-state", "correct");
         updateKeyboard(letter, "correct");
-        sounds.correct?.play();
         counts[letter] -= 1;
         correctCount++;
         if (!rewardedGreens.has(letter)) {
@@ -289,7 +280,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (counts[letter] > 0) {
         tiles[i].setAttribute("data-state", "present");
         updateKeyboard(letter, "present");
-        sounds.present?.play();
         counts[letter] -= 1;
         if (!rewardedYellows.has(letter)) {
           score += 1;
@@ -889,7 +879,6 @@ clueButtons.forEach(btn => {
     score -= cost;
     updateScoreDisplay();
     showScoreFloat(-cost, "#ff4444", scoreDisplay);
-    sounds.clue?.play();
 
     let message = "";
 

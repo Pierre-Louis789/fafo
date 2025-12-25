@@ -4,6 +4,8 @@
 
 
 ---
+ 
+
 
 
 ## 📖 Overview
@@ -83,7 +85,7 @@ F*FO is designed not only as a fun puzzle challenge but also as a demonstration 
   The game tracks performance across sessions, recording metrics such as games played, win rate, current streak, best streak, and guess distribution. This data is stored locally so players can monitor their progress and spot patterns in their play style.
 
 - **Arcade Audio**  
-  Immersive sound design enhances the experience with background music and effects for key actions (typing, submitting guesses, purchasing clues). Audio elements are toggleable, allowing players to choose between silent focus or full arcade atmosphere.
+  Background music.
 
 - **Accessibility**  
   The interface was built with accessibility in mind:  
@@ -199,7 +201,7 @@ Charts are generated dynamically from stored values, updating automatically afte
   Stores player stats and history directly in the browser. This includes games played, win rate, streaks, and guess distribution. Data persists between sessions without requiring a server or login.
 
 - **Audio API**  
-  Integrates background music and sound effects. Toggleable controls allow players to enable or disable sound. Audio feedback is tied to key actions (typing, submitting guesses, buying clues) to reinforce the arcade atmosphere.
+  Integrates background music and sound effects. Toggleable controls allow players to enable or disable sound.
 
 - **Responsive Design Techniques**  
   Media queries and flexible layouts adapt the interface to different screen sizes. The clue popup and overlays are optimized for mobile play, ensuring usability across devices.
@@ -358,13 +360,14 @@ Website was tested using the WAVE Web Accessibility Evaluation Tool, Lighthouse 
 - ✅ **Manual Testing** — Verified with NVDA and VoiceOver.
 
 
+Screenshot: ![WAVEtesting](/assets/images/Screenshot-Wave.png)
 
 - **Responsive Layout**
   - Test on mobile, tablet, and desktop.
   - Ensure clue popup adapts to small screens.
   - Verify grid and keyboard remain usable at different viewport sizes.
 
-<!-- 📸 Add screenshot of mobile layout in Chrome DevTools -->
+Screenshot: ![Responsive Layout](/assets/images/Screenshot%202025-12-25%20132346.png)
 
 ---
 ## 🧪 Testing
