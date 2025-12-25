@@ -1,6 +1,6 @@
 # 🕵️ F‑A‑F‑O  
 
-**F*ck Around and Find Out — an immersive word deduction arcade game**
+**Find Around and Find Out — an immersive word deduction arcade game**
 
 
 ---
@@ -10,7 +10,7 @@
 
 ## 📖 Overview
 
-F‑A‑F‑O (F*ck Around and Find Out) is an immersive word deduction arcade game that blends the logic of classic word puzzles with the energy of retro arcade design. Players attempt to solve a hidden five‑letter word within six guesses, earning points for correct attempts and spending them strategically on clues.  
+F‑A‑F‑O (Find Around and Find Out) is an immersive word deduction arcade game that blends the logic of classic word puzzles with the energy of retro arcade design. Players attempt to solve a hidden five‑letter word within six guesses, earning points for correct attempts and spending them strategically on clues.  
 
 The project emphasizes:
 - **Cinematic Arcade Feel** — animated feedback, sound effects, and bold typography create a game‑like atmosphere.  
