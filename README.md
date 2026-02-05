@@ -126,9 +126,48 @@ The UX was built around three guiding principles:
 2. **Accessibility** — no player should feel blocked by controls or navigation.  
 3. **Polish** — every detail, from button blur to modal transitions, contributes to a seamless, game‑like experience.
 
+---
+## 📸 Screenshots Aligned to User Stories (AC 3.3)
+
+### User Story 1  
+**“As a user, I want to easily navigate the game so I can start playing without confusion.”**
+
+![Navigation Screenshot](assets/images/screenshot-navigation.png)  
+This screenshot shows the main interface layout, including the grid, keyboard, and navigation buttons, demonstrating clear structure and intuitive flow.
 
 ---
 
+### User Story 2  
+**“As a user, I want to input guesses quickly so I can focus on solving the puzzle.”**
+
+![Input Screenshot](assets/images/screenshot-input.png)  
+This screenshot highlights the tile grid and keyboard interaction, showing how letters populate tiles and how the interface responds to user input.
+
+---
+
+### User Story 3  
+**“As a user, I want the game to work on all devices so I can play anywhere.”**
+
+![Responsive Screenshot](assets/images/screenshot-responsive.png)  
+This screenshot demonstrates the responsive layout on mobile and desktop, ensuring the grid, keyboard, and clue popup remain accessible and readable.
+
+---
+
+### User Story 4  
+**“As a user, I want clear feedback so I can understand how close I am to the solution.”**
+
+![Feedback Screenshot](assets/images/screenshot-feedback.png)  
+This screenshot shows the tile feedback system (`correct`, `present`, `absent`), helping players visually interpret each guess.
+
+---
+
+### User Story 5  
+**“As a user, I want to track my progress so I can see how I improve over time.”**
+
+![Stats Screenshot](assets/images/screenshot-stats.png)  
+This screenshot displays the stats panel, including games played, win rate, streaks, and guess distribution.
+
+---
 
 ## 📊 Stats
 
@@ -319,7 +358,7 @@ FAFO was built with accessibility as a core priority, ensuring that every player
 - Ensure clue popup adapts to small screens.
 - Verify grid and keyboard remain usable at different viewport sizes.
 
-Screenshot: ![Responsive Layout](/assets/images/Screenshot%202025-12-25%20132346.png)
+Screenshot: ![Responsive Layout](/assets/images/screenshot%202025-12-25%20132346.png)
 
 Accessibility isn’t an afterthought — it’s woven into the game’s logic, layout, and feedback systems to make FAFO inclusive and frustration‑free.
 
@@ -397,7 +436,7 @@ Screenshot: ![Game Logic](/assets/images/screenshot-game-logic.png)
   - Check games played, win rate, streaks, and guess distribution update after each session.
   - Verify persistence in `localStorage` across browser refreshes.
 
-Screenshot: ![StatsPanel](/assets/images/Screenshot-stats-panel.png)
+Screenshot: ![StatsPanel](/assets/images/screenshot-stats-panel.png)
 Screenshot: ![Historypanel](/assets/images/Screenshot-history-panel.png)
 
 ---
@@ -414,7 +453,7 @@ Website was tested using the WAVE Web Accessibility Evaluation Tool, Lighthouse 
 - ✅ **Manual Testing** — Verified with NVDA and VoiceOver.
 
 
-Screenshot: ![WAVEtesting](/assets/images/Screenshot-Wave.png)
+Screenshot: ![WAVEtesting](/assets/images/screenshot-Wave.png)
 
 
 
