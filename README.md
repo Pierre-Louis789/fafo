@@ -165,7 +165,7 @@ This screenshot shows the tile feedback system (`correct`, `present`, `absent`),
 ### User Story 5  
 **“As a user, I want to track my progress so I can see how I improve over time.”**
 
-![Stats Screenshot](assets/images/screenshot-stat-panel.png)  
+![Stats Screenshot](assets/images/screenshot-stats-panel.png)  
 This screenshot displays the stats panel, including games played, win rate, streaks, and guess distribution.
 
 ---
@@ -217,7 +217,7 @@ Both **Stats** and **History** are stored locally in the browser using `localSto
 This ensures data persists between sessions without requiring an account or server.  
 Charts are generated dynamically from stored values, updating automatically after each game.
 
-Screenshot: ![Historypanel](/assets/images/Screenshot-history-panel.png)
+Screenshot: ![Historypanel](/assets/images/screenshot-history-panel.png)
 
 -----
 
@@ -492,7 +492,7 @@ Screenshot: ![CSStesting](/assets/images/screenshot-css-validator.png)
 The site was tested using the W3C Nu HTML Checker. A few structural warnings appeared, but they are related to GitHub Pages temporarily serving an outdated cached version of the HTML rather than issues in the source code itself.
 The actual project files use valid, well‑structured markup, and the warnings do not affect rendering, accessibility, or functionality.
 
-Screenshot: ![HTMLtesting](assets/images/screenshot-html-testing.png)
+Screenshot: ![HTMLtesting](/assets/images/screenshot-html-test.png)
 
 
 ## ✅ JEST Tested Modules
