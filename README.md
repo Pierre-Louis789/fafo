@@ -127,7 +127,8 @@ The UX was built around three guiding principles:
 3. **Polish** — every detail, from button blur to modal transitions, contributes to a seamless, game‑like experience.
 
 ---
-## 📸 Screenshots Aligned to User Stories (AC 3.3)
+
+## 📸 Screenshots Aligned to User Stories
 
 ### User Story 1  
 **“As a user, I want to easily navigate the game so I can start playing without confusion.”**
@@ -148,7 +149,7 @@ This screenshot highlights the tile grid and keyboard interaction, showing how l
 ### User Story 3  
 **“As a user, I want the game to work on all devices so I can play anywhere.”**
 
-![Responsive Screenshot](assets/images/screenshot-responsive.png)  
+![Responsive Screenshot](assets/images/screenshot-layout.png)  
 This screenshot demonstrates the responsive layout on mobile and desktop, ensuring the grid, keyboard, and clue popup remain accessible and readable.
 
 ---
@@ -156,7 +157,7 @@ This screenshot demonstrates the responsive layout on mobile and desktop, ensuri
 ### User Story 4  
 **“As a user, I want clear feedback so I can understand how close I am to the solution.”**
 
-![Feedback Screenshot](assets/images/screenshot-feedback.png)  
+![Feedback Screenshot](assets/images/screenshot-input.png)  
 This screenshot shows the tile feedback system (`correct`, `present`, `absent`), helping players visually interpret each guess.
 
 ---
@@ -164,7 +165,7 @@ This screenshot shows the tile feedback system (`correct`, `present`, `absent`),
 ### User Story 5  
 **“As a user, I want to track my progress so I can see how I improve over time.”**
 
-![Stats Screenshot](assets/images/screenshot-stats.png)  
+![Stats Screenshot](assets/images/screenshot-stat-panel.png)  
 This screenshot displays the stats panel, including games played, win rate, streaks, and guess distribution.
 
 ---
@@ -358,7 +359,7 @@ FAFO was built with accessibility as a core priority, ensuring that every player
 - Ensure clue popup adapts to small screens.
 - Verify grid and keyboard remain usable at different viewport sizes.
 
-Screenshot: ![Responsive Layout](/assets/images/screenshot%202025-12-25%20132346.png)
+Screenshot: ![Responsive Layout](/assets/images/screenshot-layout.png)
 
 Accessibility isn’t an afterthought — it’s woven into the game’s logic, layout, and feedback systems to make FAFO inclusive and frustration‑free.
 
