@@ -189,6 +189,7 @@ For example:
 
 This visualization helps players identify patterns in their deduction style and measure improvement over time.
 
+Screenshot: ![StatsPanel](/assets/images/screenshot-stats-panel.png)
 
 ---
 
@@ -216,6 +217,7 @@ Both **Stats** and **History** are stored locally in the browser using `localSto
 This ensures data persists between sessions without requiring an account or server.  
 Charts are generated dynamically from stored values, updating automatically after each game.
 
+Screenshot: ![Historypanel](/assets/images/Screenshot-history-panel.png)
 
 -----
 
@@ -374,38 +376,82 @@ Testing FAFO ensures gameplay, accessibility, and performance remain consistent 
 
 ---
 
-## 🧪 Automated vs Manual Testing 
+## 🧪 Functional & Manual Testing Summary
 
-### Automated Testing
-Automated testing uses tools or scripts to run tests without human input. It is fast, repeatable, and ideal for validating logic, syntax, and predictable behaviours.
+### 1. Functional Testing
 
-**Key characteristics:**
-- Runs consistently without human error  
-- Ideal for regression testing  
-- Validates JavaScript logic and code quality  
-- Ensures stable behaviour after updates  
+#### Game Logic
+- Verified guesses are validated against `dictionary.txt`.
+- Confirmed `wordBank.js` loads valid five‑letter words.
+- Tested tile feedback system (`correct`, `present`, `absent`) for accuracy.
+- Checked scoring system: points awarded for correct guesses and deducted for clue purchases.
+- Ensured overlays (intro, clue popup, endgame) trigger at correct times.
+- Verified keyboard input and on‑screen keys behave consistently.
 
-**Examples in FAFO:**
-- Running JavaScript through **JSLint** to detect syntax issues  
-- Jest unit tests for core modules (`evaluateGuess`, `keyboardLogic`, `rowLogic`, `scoringLogic`, `statsEngine`)  
-- Re-running automated tests after refactoring  
+#### Stats & History
+- Confirmed games played, win rate, streaks, and guess distribution update after each game.
+- Verified `localStorage` persistence across refreshes.
+- Checked history log entries for correct date, mode, result, and target word.
+
+#### Clue System
+- Tested each clue type (random letter, first letter, last letter).
+- Verified point deduction before revealing the clue.
+- Ensured clues cannot be purchased without enough points.
 
 ---
 
-### Manual Testing
-Manual testing is performed by a human interacting with the game. It focuses on usability, accessibility, responsiveness, and real‑world behaviour.
+### 2. Manual Testing
 
-**Key characteristics:**
-- Detects visual, layout, and UX issues  
-- Essential for accessibility and keyboard flow  
-- Validates responsiveness across devices  
-- Ensures intuitive gameplay and navigation  
+#### Responsiveness
+Tested on:
+- Mobile (iPhone, Android)
+- Tablet
+- Desktop (various resolutions)
 
-**Examples in FAFO:**
-- Testing keyboard input and on‑screen keys  
-- Checking tile animations and feedback  
-- Verifying overlays (intro, clue popup, endgame)  
-- Testing mobile layout and clue popup behaviour  
+Checks included:
+- Grid scaling
+- Keyboard layout
+- Clue popup behaviour
+- Overlay readability
+
+#### Accessibility
+- Full keyboard navigation tested (typing, Enter, Backspace).
+- Focus management verified (buttons blur after use).
+- Screen reader checks using NVDA and VoiceOver.
+- ARIA roles validated for modals, live regions, and navigation.
+- Contrast checked using WAVE and Lighthouse.
+
+#### Cross‑Browser Testing
+Tested on:
+- Chrome
+- Firefox
+- Safari (Mac/iOS)
+- Edge
+
+All browsers correctly handled:
+- Animations
+- Audio playback
+- LocalStorage
+- Keyboard input
+- Modal transitions
+
+---
+
+### 3. Automated Testing
+
+This project uses **Jest** for unit testing. All core logic is extracted into pure functions and tested independently from the DOM.
+
+#### Modules Tested
+- `evaluateGuess.js`
+- `keyboardLogic.js`
+- `rowLogic.js`
+- `scoringLogic.js`
+- `statsEngine.js`
+- `validation.test.js`
+- `example.test.js`
+
+All tests passed successfully, confirming stable behaviour across core systems.
+
 
 ---
 
@@ -418,17 +464,6 @@ Manual testing is performed by a human interacting with the game. It focuses on 
 | Regression testing after updates | Automated | Ensures nothing breaks |
 | Testing user experience | Manual | Needs real interaction |
 | Validating form/guess logic | Both | Automated for logic, manual for UX |
-
-
-Screenshot: ![Game Logic](/assets/images/screenshot-game-logic.png)
-
-
-- **Stats & History**
-  - Check games played, win rate, streaks, and guess distribution update after each session.
-  - Verify persistence in `localStorage` across browser refreshes.
-
-Screenshot: ![StatsPanel](/assets/images/screenshot-stats-panel.png)
-Screenshot: ![Historypanel](/assets/images/Screenshot-history-panel.png)
 
 ---
 
@@ -476,22 +511,27 @@ Screenshot : ![Tests folder](/assets/images/Screenshot-tests.png)
 Screenshot : ![Data folder](/assets/images/Screenshot-data.png)
 ---
 Screenshot : ![Jest testing](/assets/images/screenshot-jest-testing.png)
-st
 
 ---
 
-### 4. Cross‑Browser Testing
-Test in:
-- Chrome  
-- Firefox  
-- Safari (Mac/iOS)  
-- Edge  
+## 🐞 Known Bugs
 
-Check animations, audio, localStorage, and keyboard input. Document differences.
+- Occasional tile animation desynchronisation.  
+  In rare cases, especially on slower devices, tile flip animations may play slightly out of sync when revealing feedback. This does not affect the accuracy of the feedback or the gameplay logic.
 
+- Audio playback delay on first interaction.  
+  Some browsers (particularly mobile Safari) introduce a short delay before the background music begins after the first user interaction. This is due to built‑in autoplay restrictions and does not impact game functionality.
+
+- Clue popup scroll behaviour on small screens.  
+  On very small mobile devices, the clue popup may cause slight vertical scrolling when opened. This is a minor layout quirk and does not interfere with clue selection or gameplay.
+
+- LocalStorage sync timing.  
+  In rare cases, stats may update one frame late when a game ends, causing a brief flicker before the correct values appear. The data is stored correctly and displays properly on the next view.
+
+- Validator warnings from external libraries.  
+  HTML/CSS validators may flag expected warnings related to ARIA attributes, CSS variables, or audio autoplay handling. These are non‑critical and do not affect accessibility or performance.
 
 ---
-
 
 ## 🔮 Future Improvements
 
@@ -510,10 +550,31 @@ Sound Effect by <a href="https://pixabay.com/users/freesound_community-46691455/
 
 ---
 
+## 🚀 Deployment
+
+This site is designed to be deployed as a static project using GitHub Pages.
+
+
+
+## 🌍 How to View the Website
+
+ - Visit the website : [https://pierre-louis789.github.io/fafo/]
+ - Use Desktop or Mobile
+
+
+🧠 Notes for First-Time Visitors
+
+- No installation needed—just open the link in your browser.
+- Best viewed in Edge, Chrome, Firefox, or Safari.
+
+---
+
 ## 👨‍💻 Credits
 
 
 Built by Pierre with a focus on modularity, accessibility, and arcade adventure.
+Inspired by the numerous word game available.
+https://pierre-louis789.github.io/fafo/
 
 ---
 
