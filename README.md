@@ -189,7 +189,7 @@ For example:
 
 This visualization helps players identify patterns in their deduction style and measure improvement over time.
 
-Screenshot: ![StatsPanel](/assets/images/screenshot-stats-panel.png)
+Screenshot: ![Stats Screenshots](/assets/images/screenshot-stats-panel.png)
 
 ---
 
@@ -492,7 +492,7 @@ Screenshot: ![CSStesting](/assets/images/screenshot-css-validator.png)
 The site was tested using the W3C Nu HTML Checker. A few structural warnings appeared, but they are related to GitHub Pages temporarily serving an outdated cached version of the HTML rather than issues in the source code itself.
 The actual project files use valid, well‑structured markup, and the warnings do not affect rendering, accessibility, or functionality.
 
-Screenshot: ![HTMLtesting](/assets/images/screenshot-html-test.png)
+Screenshot: ![HTMLtesting](assets/images/screenshot-html-test.png)
 
 
 ## ✅ JEST Tested Modules
