@@ -165,7 +165,7 @@ This screenshot shows the tile feedback system (`correct`, `present`, `absent`),
 ### User Story 5  
 **“As a user, I want to track my progress so I can see how I improve over time.”**
 
-![Stats Screenshot](assets/images/screenshot-stats-panel.png)  
+![Stats Screenshot](assets/images/screenshot-stats-panel.png) 
 This screenshot displays the stats panel, including games played, win rate, streaks, and guess distribution.
 
 ---
@@ -189,7 +189,7 @@ For example:
 
 This visualization helps players identify patterns in their deduction style and measure improvement over time.
 
-Screenshot: ![Stats Screenshots](/assets/images/screenshot-stats-panel.png)
+![Stats Screenshot](assets/images/screenshot-stats-panel.png)
 
 ---
 
@@ -217,7 +217,7 @@ Both **Stats** and **History** are stored locally in the browser using `localSto
 This ensures data persists between sessions without requiring an account or server.  
 Charts are generated dynamically from stored values, updating automatically after each game.
 
-Screenshot: ![Historypanel](/assets/images/screenshot-history-panel.png)
+Screenshot: ![History panel](/assets/images/screenshot-history-panel.png)
 
 -----
 
