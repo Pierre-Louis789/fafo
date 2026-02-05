@@ -334,36 +334,38 @@ Testing FAFO ensures gameplay, accessibility, and performance remain consistent 
 
 ---
 
-## Automated vs Manual Testing
+## 🧪 Automated vs Manual Testing (AC 3.1)
 
 ### Automated Testing
-Automated testing uses scripts or tools to run tests without human input. It is fast, repeatable, and ideal for checking logic, code behaviour, and syntax.
+Automated testing uses tools or scripts to run tests without human input. It is fast, repeatable, and ideal for validating logic, syntax, and predictable behaviours.
 
 **Key characteristics:**
-- Runs tests automatically using tools or scripts  
-- Ensures consistent results  
-- Useful for regression testing  
-- Ideal for validating JavaScript logic and code quality  
+- Runs consistently without human error  
+- Ideal for regression testing  
+- Validates JavaScript logic and code quality  
+- Ensures stable behaviour after updates  
 
-**Examples in this project:**
-- Using JSLint to validate JavaScript  
-- Re-running validation after code updates  
+**Examples in FAFO:**
+- Running JavaScript through **JSLint** to detect syntax issues  
+- Jest unit tests for core modules (`evaluateGuess`, `keyboardLogic`, `rowLogic`, `scoringLogic`, `statsEngine`)  
+- Re-running automated tests after refactoring  
 
 ---
 
 ### Manual Testing
-Manual testing is performed by a human interacting with the website. It focuses on usability, layout, responsiveness, and real world behaviour.
+Manual testing is performed by a human interacting with the game. It focuses on usability, accessibility, responsiveness, and real‑world behaviour.
 
 **Key characteristics:**
-- Conducted by a human tester  
-- Identifies visual, layout, and UX issues  
-- Essential for checking responsiveness and accessibility  
-- Useful for verifying user flows and interactions  
+- Detects visual, layout, and UX issues  
+- Essential for accessibility and keyboard flow  
+- Validates responsiveness across devices  
+- Ensures intuitive gameplay and navigation  
 
-**Examples in this project:**
-- Testing navigation links  
-- Checking layout on mobile, tablet, and desktop  
-- Verifying form behaviour and user interactions  
+**Examples in FAFO:**
+- Testing keyboard input and on‑screen keys  
+- Checking tile animations and feedback  
+- Verifying overlays (intro, clue popup, endgame)  
+- Testing mobile layout and clue popup behaviour  
 
 ---
 
@@ -371,11 +373,12 @@ Manual testing is performed by a human interacting with the website. It focuses 
 
 | Situation | Best Method | Reason |
 |----------|-------------|--------|
-| Checking code quality or syntax | Automated | Fast and consistent |
+| Checking code quality or syntax | Automated | Fast, consistent, repeatable |
 | Testing layout and responsiveness | Manual | Requires human judgement |
 | Regression testing after updates | Automated | Ensures nothing breaks |
 | Testing user experience | Manual | Needs real interaction |
-| Validating form logic | Both | Automated for logic, manual for UX |
+| Validating form/guess logic | Both | Automated for logic, manual for UX |
+
 
 
 ### 1. Functional Testing
