@@ -201,7 +201,7 @@ Charts are generated dynamically from stored values, updating automatically afte
   Stores player stats and history directly in the browser. This includes games played, win rate, streaks, and guess distribution. Data persists between sessions without requiring a server or login.
 
 - **Audio API**  
-  Integrates background music and sound effects. Toggleable controls allow players to enable or disable sound.
+  Integrates background music. Toggleable controls allow players to enable or disable sound.
 
 - **Responsive Design Techniques**  
   Media queries and flexible layouts adapt the interface to different screen sizes. The clue popup and overlays are optimized for mobile play, ensuring usability across devices.
@@ -273,7 +273,7 @@ fafo/
   Contains all visual styling: retro arcade theme, responsive layout, and animations. Classes like `correct`, `present`, and `absent` are applied dynamically to tiles for instant feedback.
 
 - **assets/sounds/**  
-  Houses audio files for background music and sound effects (typing, submitting guesses, clue purchases). Triggered by JavaScript events to reinforce the arcade atmosphere.
+  Houses audio files for background music. Triggered by JavaScript events to reinforce the arcade atmosphere.
 
 - **assets/images/**  
   Stores optional graphics such as logos, icons, or decorative assets. Keeps visuals modular and easy to swap or expand.
@@ -310,9 +310,16 @@ FAFO was built with accessibility as a core priority, ensuring that every player
 - Responsive design adapts the interface for desktop and mobile, with dedicated clue popups optimized for smaller screens.
 
 ### Inclusive Design Principles
-1. **Clarity** — feedback is immediate and visually distinct.  
-2. **Consistency** — input flows are predictable across keyboard and touch.  
-3. **Compatibility** — accessible markup ensures support for assistive technologies.  
+- **Clarity** — feedback is immediate and visually distinct.  
+- **Consistency** — input flows are predictable across keyboard and touch.  
+- **Compatibility** — accessible markup ensures support for assistive technologies.  
+
+### Responsive Layout
+- Test on mobile, tablet, and desktop.
+- Ensure clue popup adapts to small screens.
+- Verify grid and keyboard remain usable at different viewport sizes.
+
+Screenshot: ![Responsive Layout](/assets/images/Screenshot%202025-12-25%20132346.png)
 
 Accessibility isn’t an afterthought — it’s woven into the game’s logic, layout, and feedback systems to make FAFO inclusive and frustration‑free.
 
@@ -326,6 +333,50 @@ Accessibility isn’t an afterthought — it’s woven into the game’s logic, 
 Testing FAFO ensures gameplay, accessibility, and performance remain consistent across devices and browsers. This section documents the methodology and results.
 
 ---
+
+## Automated vs Manual Testing
+
+### Automated Testing
+Automated testing uses scripts or tools to run tests without human input. It is fast, repeatable, and ideal for checking logic, code behaviour, and syntax.
+
+**Key characteristics:**
+- Runs tests automatically using tools or scripts  
+- Ensures consistent results  
+- Useful for regression testing  
+- Ideal for validating JavaScript logic and code quality  
+
+**Examples in this project:**
+- Using JSLint to validate JavaScript  
+- Re-running validation after code updates  
+
+---
+
+### Manual Testing
+Manual testing is performed by a human interacting with the website. It focuses on usability, layout, responsiveness, and real world behaviour.
+
+**Key characteristics:**
+- Conducted by a human tester  
+- Identifies visual, layout, and UX issues  
+- Essential for checking responsiveness and accessibility  
+- Useful for verifying user flows and interactions  
+
+**Examples in this project:**
+- Testing navigation links  
+- Checking layout on mobile, tablet, and desktop  
+- Verifying form behaviour and user interactions  
+
+---
+
+### When Each Method Is Used
+
+| Situation | Best Method | Reason |
+|----------|-------------|--------|
+| Checking code quality or syntax | Automated | Fast and consistent |
+| Testing layout and responsiveness | Manual | Requires human judgement |
+| Regression testing after updates | Automated | Ensures nothing breaks |
+| Testing user experience | Manual | Needs real interaction |
+| Validating form logic | Both | Automated for logic, manual for UX |
+
 
 ### 1. Functional Testing
 - **Game Logic**
@@ -362,12 +413,7 @@ Website was tested using the WAVE Web Accessibility Evaluation Tool, Lighthouse 
 
 Screenshot: ![WAVEtesting](/assets/images/Screenshot-Wave.png)
 
-- **Responsive Layout**
-  - Test on mobile, tablet, and desktop.
-  - Ensure clue popup adapts to small screens.
-  - Verify grid and keyboard remain usable at different viewport sizes.
 
-Screenshot: ![Responsive Layout](/assets/images/Screenshot%202025-12-25%20132346.png)
 
 ---
 ## 🧪 Testing
@@ -390,15 +436,9 @@ Screenshot : ![Tests folder](/assets/images/Screenshot-tests.png)
 Screenshot : ![Data folder](/assets/images/Screenshot-data.png)
 ---
 Screenshot : ![Jest testing](/assets/images/screenshot-jest-testing.png)
+st
 
 ---
-
-### 🧪 How to Run Tests
-
-```bash
-npm install
-npm test
-```
 
 ### 4. Cross‑Browser Testing
 Test in:
