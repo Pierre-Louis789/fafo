@@ -374,7 +374,7 @@ Testing FAFO ensures gameplay, accessibility, and performance remain consistent 
 
 ---
 
-## 🧪 Automated vs Manual Testing (AC 3.1)
+## 🧪 Automated vs Manual Testing 
 
 ### Automated Testing
 Automated testing uses tools or scripts to run tests without human input. It is fast, repeatable, and ideal for validating logic, syntax, and predictable behaviours.
@@ -420,16 +420,6 @@ Manual testing is performed by a human interacting with the game. It focuses on 
 | Validating form/guess logic | Both | Automated for logic, manual for UX |
 
 
-
-### 1. Functional Testing
-- **Game Logic**
-  - Verify guesses are validated against `dictionary.txt`.
-  - Confirm `wordBank.js` fetches words correctly from `dictionary.txt`.
-  - Test to returns a valid five‑letter word from `dictionary.txt`.
-  - Confirm tile feedback (`correct`, `present`, `absent`) updates visually.
-  - Test scoring system: points awarded for correct guesses, deducted for clue purchases.
-  - Ensure overlays (intro, clue popup, endgame) trigger at the right times.
-
 Screenshot: ![Game Logic](/assets/images/screenshot-game-logic.png)
 
 
@@ -457,13 +447,20 @@ Website was tested using the WAVE Web Accessibility Evaluation Tool, Lighthouse 
 Screenshot: ![WAVEtesting](/assets/images/screenshot-Wave.png)
 
 
+## ✅ CSS Validation
 
----
-## 🧪 Testing
+✅ The site’s CSS was tested using the W3C Jigsaw CSS Validator. All custom stylesheets passed without critical errors.
+Screenshot: ![CSStesting](/assets/images/screenshot-css-validator.png)
 
-This project uses [Jest](https://jestjs.io/) for unit testing. All core game logic is extracted into pure functions and tested independently from the DOM.
+## ✅ HTML Validation
 
-### ✅ Tested Modules
+The site was tested using the W3C Nu HTML Checker. A few structural warnings appeared, but they are related to GitHub Pages temporarily serving an outdated cached version of the HTML rather than issues in the source code itself.
+The actual project files use valid, well‑structured markup, and the warnings do not affect rendering, accessibility, or functionality.
+
+Screenshot: ![HTMLtesting](assets/images/screenshot-html-testing.png)
+
+
+## ✅ JEST Tested Modules
 
 - `evaluateGuess.js` — guess evaluation logic
 - `keyboardLogic.js` — keyboard state updates
