@@ -479,7 +479,7 @@ Website was tested using the WAVE Web Accessibility Evaluation Tool, Lighthouse 
 - ✅ **Manual Testing** — Verified with NVDA and VoiceOver.
 
 
-Screenshot: ![WAVEtesting](/assets/images/screenshot-Wave.png)
+Screenshot: ![WAVEtesting](/assets/images/screenshot-wave.png)
 
 
 ## ✅ CSS Validation
