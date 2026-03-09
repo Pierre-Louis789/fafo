@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const solutionWords = ["FRAME", "CLOUD", "MUSIC", "LIGHT", "RIVER", "STORM"];
   let validGuesses = [...solutionWords];
 
-  fetch("/assets/js/data/dictionary.txt")
+  fetch("assets/js/data/dictionary.txt")
     .then(res => res.text())
     .then(text => {
       const words = text.split(/\r?\n/)
