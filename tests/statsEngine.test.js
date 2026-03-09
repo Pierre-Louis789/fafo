@@ -1,6 +1,6 @@
 // tests/statsEngine.test.js
 
-const { recordResult, computeStats, MAX_HISTORY } = require("../data/statsEngine.js");
+const { recordResult, computeStats, MAX_HISTORY } = require("../data/statsengine.js");
 
 describe("Stats engine - recordResult", () => {
   test("records a win with correct structure", () => {

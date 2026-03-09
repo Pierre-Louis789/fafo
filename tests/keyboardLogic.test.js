@@ -1,4 +1,4 @@
-const { updateKeyState } = require("../data/keyboardLogic.js");
+const { updateKeyState } = require("../data/keyboardlogic.js");
 
 describe("Keyboard state logic", () => {
   test("correct overrides everything", () => {

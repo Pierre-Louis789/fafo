@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const solutionWords = ["FRAME", "CLOUD", "MUSIC", "LIGHT", "RIVER", "STORM"];
   let validGuesses = [...solutionWords];
 
-  fetch("data/dictionary.txt")
+  fetch("/data/dictionary.txt")
     .then(res => res.text())
     .then(text => {
       const words = text.split(/\r?\n/)
@@ -403,7 +403,7 @@ function updateHistory() {
       `).join("");
 }
 
-  // ===========================
+// ===========================
 // 🏆 Open/Close Modal buttons
 // ===========================
 // How to Play modal

@@ -1,4 +1,4 @@
-const { evaluateGuess } = require("../data/evaluateGuess.js");
+const { evaluateGuess } = require("../data/evaluateguess.js");
 
 describe("Guess evaluation logic", () => {
   test("all correct letters", () => {

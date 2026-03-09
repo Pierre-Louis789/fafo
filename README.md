@@ -442,11 +442,11 @@ All browsers correctly handled:
 This project uses **Jest** for unit testing. All core logic is extracted into pure functions and tested independently from the DOM.
 
 #### Modules Tested
-- `evaluateGuess.js`
-- `keyboardLogic.js`
-- `rowLogic.js`
-- `scoringLogic.js`
-- `statsEngine.js`
+- `evaluateguess.js`
+- `keyboardlogic.js`
+- `rowlogic.js`
+- `scoringlogic.js`
+- `statsengine.js`
 - `validation.test.js`
 - `example.test.js`
 
@@ -497,11 +497,11 @@ Screenshot: ![HTMLtesting](assets/images/screenshot-html-test.png)
 
 ## ✅ JEST Tested Modules
 
-- `evaluateGuess.js` — guess evaluation logic
-- `keyboardLogic.js` — keyboard state updates
-- `rowLogic.js` — tile input and deletion
-- `scoringLogic.js` — point system and streaks
-- `statsEngine.js` — win/loss history, streak tracking, distribution
+- `evaluateguess.js` — guess evaluation logic
+- `keyboardlogic.js` — keyboard state updates
+- `rowlogic.js` — tile input and deletion
+- `scoringlogic.js` — point system and streaks
+- `statsengine.js` — win/loss history, streak tracking, distribution
 - `validation.test.js` — word validation
 - `example.test.js` — sample test for setup
 ---

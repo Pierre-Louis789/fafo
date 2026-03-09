@@ -2,7 +2,7 @@ const {
   addLetterToRow,
   removeLetterFromRow,
   isRowFull
-} = require("../data/rowLogic.js");
+} = require("../data/rowlogic.js");
 
 describe("Row input logic", () => {
   test("adds letters in order", () => {

@@ -1,4 +1,4 @@
-const { scoreGuess } = require("../data/scoringLogic.js");
+const { scoreGuess } = require("../data/scoringlogic.js");
 
 describe("Scoring logic", () => {
   test("awards +2 for each new green letter", () => {
