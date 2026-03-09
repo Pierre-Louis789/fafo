@@ -5,7 +5,7 @@
 let solutionWords = [];
 let validGuesses = [];
 
-fetch("/assets/js/data/dictionary.txt")
+fetch("assets/js/data/dictionary.txt")
   .then(res => res.text())
   .then(text => {
     const words = text
