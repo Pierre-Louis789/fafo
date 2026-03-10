@@ -1,7 +1,7 @@
 // 📚 LogicLine Word Bank
 // ===========================
 
-// Load external dictionary (one word per line in data/dictionary.txt)
+
 let solutionWords = [];
 let validGuesses = [];
 
@@ -13,12 +13,12 @@ fetch("assets/js/data/dictionary.txt")
       .map(w => w.trim().toUpperCase())
       .filter(w => w.length === 5);
 
-    // Use the dictionary both for solutions and guesses
+    
     solutionWords = words;
     validGuesses = words;
   });
 
-// Utility functions
+
   export function getRandomSolution() {
   const index = Math.floor(Math.random() * solutionWords.length);
   return solutionWords[index];

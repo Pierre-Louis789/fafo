@@ -17,7 +17,7 @@ function scoreGuess({
 
   let correctCount = 0;
 
-  // First pass: correct letters
+ 
   for (let i = 0; i < 5; i++) {
     const letter = guessArr[i];
     if (letter === targetArr[i]) {
@@ -31,7 +31,7 @@ function scoreGuess({
     }
   }
 
-  // Second pass: present letters
+
   for (let i = 0; i < 5; i++) {
     const letter = guessArr[i];
     if (letter === targetArr[i]) continue;
@@ -46,7 +46,7 @@ function scoreGuess({
     }
   }
 
-  // Win condition
+
   if (correctCount === 5) {
     streak++;
     const bonus = (6 - currentRow) * 2;
@@ -61,7 +61,6 @@ function scoreGuess({
     };
   }
 
-  // Loss condition
   if (currentRow === 5) {
     streak = 0;
     return {
@@ -72,7 +71,7 @@ function scoreGuess({
     };
   }
 
-  // Normal guess
+ 
   return {
     score,
     streak,

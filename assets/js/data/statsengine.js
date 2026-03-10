@@ -65,14 +65,14 @@ function computeStats(history) {
    Math.round((wins / gamesPlayed) * 100)
     : 0;
 
-  // Current streak: from end backwards
+  
   let currentStreak = 0;
   for (let i = history.length - 1; i >= 0; i--) {
     if (history[i].result === "Win") currentStreak++;
     else break;
   }
 
-  // Best streak: longest run
+ 
   let bestStreakCalc = 0;
   let tempStreak = 0;
   history.forEach(g => {
@@ -84,7 +84,6 @@ function computeStats(history) {
     }
   });
 
-  // Guess distribution 1–6
   const distribution = [0, 0, 0, 0, 0, 0];
   history.forEach(g => {
     if (g.result === "Win" && g.attempts >= 1 && g.attempts <= 6) {

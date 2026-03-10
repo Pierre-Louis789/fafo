@@ -389,7 +389,7 @@ function updateHistory() {
   if (!historyContent) return;
 
   let arr = JSON.parse(localStorage.getItem("history")) || [];
-  let recent = arr.slice(-5); // last 5 games only
+  let recent = arr.slice(-5);
 
   historyContent.innerHTML = arr.length === 0 ?
    "<p>No games played yet.</p>"
@@ -453,7 +453,6 @@ if (closeStats) {
 // ✨ Close modals by clicking outside
 // ===========================
 
-// Generic helper
 function enableOverlayClose(overlay) {
   if (!overlay) return;
   overlay.addEventListener("click", (e) => {
@@ -490,14 +489,14 @@ function updateStatsModal() {
   const wins = arr.filter(g => g.result === "Win").length;
   const winPercent = gamesPlayed > 0 ? Math.round((wins / gamesPlayed) * 100) : 0;
 
-  // Current streak (from the end)
+  
   let currentStreak = 0;
   for (let i = arr.length - 1; i >= 0; i--) {
     if (arr[i].result === "Win") currentStreak++;
     else break;
   }
 
-  // Best streak (longest run)
+  
   let bestStreakCalc = 0;
   let tempStreak = 0;
   arr.forEach(g => {
@@ -509,7 +508,7 @@ function updateStatsModal() {
     }
   });
 
-  // Guess distribution 1–6
+ 
   const distribution = [0, 0, 0, 0, 0, 0];
   arr.forEach(g => {
     if (g.result === "Win" && g.attempts >= 1 && g.attempts <= 6) {
@@ -793,35 +792,34 @@ restartBtn.addEventListener("click", () => {
     });
   }
 
-  // Prevent Enter key from submitting clue popup form
+
   document.addEventListener("keydown", (e) => {
   const clueOpen = cluePopup && cluePopup.classList.contains("active");
   const isClueButton = e.target.classList.contains("clue-btn");
 
   if (e.key === "Enter" && clueOpen && isClueButton) {
-    e.preventDefault(); // block Enter only when clue popup is active and focused on a clue button
+    e.preventDefault(); 
   }
 });
 
-  // View helper
+
   function isMobileView() {
     return window.innerWidth <= 768;
   }
 
-  // Feedback router
+
   function showClue(message,autoClear=false) {
     const targetFB = isMobileView() ? clueFeedbackMobile : clueFeedbackDesktop;
     if (!targetFB) return;
     
     targetFB.textContent = message;
 
-    // Auto-clear only for error messages
   if (autoClear) {
     setTimeout(() => {
       if (targetFB.textContent === message) {
         targetFB.textContent = "";
       }
-    }, 2000); // disappears after 2s
+    }, 2000); 
   }
 }
 
@@ -845,7 +843,8 @@ clueButtons.forEach(btn => {
       }
       return;
     }
-   // Scan grid for confirmed letters
+   
+
     const confirmed = new Set();
     document.querySelectorAll(".guess-row").forEach(row => {
       row.querySelectorAll(".tile").forEach((tile, i) => {
@@ -888,10 +887,10 @@ clueButtons.forEach(btn => {
 
     showClue(message);
 
-    // 🔑 remove focus from the clue button
+
   btn.blur();
 
-  // ✅ move focus to a safe element
+ 
   const kb = document.getElementById("keyboard");
   if (kb) {
     kb.focus();
@@ -909,16 +908,16 @@ clueButtons.forEach(btn => {
   function setMode(isDaily) {
     isDailyMode = isDaily;
 
-    // Toggle active button styles
+
   if (btnDaily) btnDaily.classList.toggle("active", isDailyMode);
   if (btnRandom) btnRandom.classList.toggle("active", !isDailyMode);
 
-  // Show mode message
+ 
     showClue(isDailyMode ? "📅 Daily mode activated" : "🎲 Random mode activated");
     startNewGame();
   }
 
-  // Mode toggle buttons
+
 if (btnDaily) {
   btnDaily.addEventListener("click", e => {
     e.target.blur();
@@ -933,7 +932,6 @@ if (btnRandom) {
 }
 
 
-  // Intro → launch selected mode
   if (startBtn) {
     startBtn.addEventListener("click", () => {
       grid.style.display = "grid";
@@ -944,6 +942,5 @@ if (btnRandom) {
     });
   }
 
-  // Initial mode on load
   setMode(true);
 });
