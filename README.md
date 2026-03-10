@@ -613,7 +613,7 @@ This site is designed to be deployed as a static project using GitHub Pages.
 
 Built by Pierre with a focus on modularity, accessibility, and arcade adventure.
 Inspired by the numerous word game available.
-https://pierre-louis789.github.io/fafo/
+[https://github.com/Pierre-Louis789/fafo]
 
 ---
 
