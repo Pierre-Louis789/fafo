@@ -512,6 +512,45 @@ Screenshot : ![Data folder](/assets/images/screenshot-data.png)
 ---
 Screenshot : ![Jest testing](/assets/images/screenshot-jest-testing.png)
 
+
+## JavaScript Code Quality Validation (JSHint)
+
+All JavaScript files in the project were validated using **JSHint** to ensure code quality, consistency, and adherence to modern JavaScript standards.
+
+### Configuration
+
+A `.jshintrc` file was added to define the linting rules and explicitly enable ES11 features used throughout the project:
+
+```json
+{
+  "esversion": 11,
+  "browser": true,
+  "devel": true,
+  "undef": true,
+  "unused": true
+}
+```
+
+### Validation Process
+
+The following command was run from the project root to validate all JavaScript files:
+
+### Issues Identified and Resolved
+
+During validation, several issues were flagged and corrected:
+
+- Declared `module` as a global in module-based files
+- Fixed misleading ternary line breaks flagged by JSHint
+- Added a missing semicolon in `script.js`
+- Removed unused variables (`clueOpen`, `saveGameResult`)
+- Ensured all ES6+ syntax was correctly recognised under ES11 rules
+
+### Final Result
+
+After applying all fixes, the entire JavaScript codebase passes JSHint with:
+
+0 errors.
+
 ---
 
 ## 🐞 Known Bugs
