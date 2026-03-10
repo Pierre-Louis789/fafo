@@ -506,9 +506,9 @@ Screenshot: ![HTMLtesting](assets/images/screenshot-html-test.png)
 - `example.test.js` — sample test for setup
 ---
 
-Screenshot : ![Tests folder](/assets/images/Screenshot-tests.png)
+Screenshot : ![Tests folder](/assets/images/screenshot-tests.png)
 ---
-Screenshot : ![Data folder](/assets/images/Screenshot-data.png)
+Screenshot : ![Data folder](/assets/images/screenshot-data.png)
 ---
 Screenshot : ![Jest testing](/assets/images/screenshot-jest-testing.png)
 
