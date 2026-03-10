@@ -1,14 +1,9 @@
 // data/statsEngine.js
+/* global module */
 
 const MAX_HISTORY = 1000;
 
-/**
- * Record a game result into history and update score/streak/bestStreak.
- * This mirrors your current recordGameResult behavior.
- *
- * state: { score, streak, bestStreak, isDailyMode }
- * params: { word, win, points, attempts, date, mode }
- */
+
 function recordResult(history, state, params) {
   const {
     word,
@@ -29,7 +24,7 @@ function recordResult(history, state, params) {
     mode
   });
 
-  // Trim history: keep last 1000 entries
+
   let trimmedHistory = newHistory;
   if (trimmedHistory.length > MAX_HISTORY) {
     trimmedHistory = trimmedHistory.slice(-MAX_HISTORY);
@@ -37,7 +32,7 @@ function recordResult(history, state, params) {
 
   let { score, streak, bestStreak, isDailyMode } = state;
 
-  // Daily mode streak + score behavior (mirror your script)
+ 
   if (isDailyMode) {
     if (win) {
       streak += 1;
@@ -49,7 +44,7 @@ function recordResult(history, state, params) {
     }
   }
 
-  // Global win scoring (also in your current code)
+
   if (win) {
     score += points;
   }
@@ -62,15 +57,12 @@ function recordResult(history, state, params) {
   };
 }
 
-/**
- * Compute aggregate stats from history.
- * Mirrors updateStatsModal logic (minus DOM).
- */
+
 function computeStats(history) {
   const gamesPlayed = history.length;
   const wins = history.filter(g => g.result === "Win").length;
-  const winPercent = gamesPlayed > 0
-    ? Math.round((wins / gamesPlayed) * 100)
+  const winPercent = gamesPlayed > 0 ?
+   Math.round((wins / gamesPlayed) * 100)
     : 0;
 
   // Current streak: from end backwards

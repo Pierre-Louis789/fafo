@@ -1,3 +1,5 @@
+/* global module */
+
 function addLetterToRow(row, letter) {
   const filled = row.findIndex(t => t === "");
   if (filled === -1) return row; // row full

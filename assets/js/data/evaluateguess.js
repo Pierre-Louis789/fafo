@@ -1,3 +1,5 @@
+/* global module */
+
 function evaluateGuess(guess, solution) {
   const targetArr = [...solution];
   const guessArr = [...guess];
@@ -27,5 +29,6 @@ function evaluateGuess(guess, solution) {
 
   return result;
 }
+
 
 module.exports = { evaluateGuess };

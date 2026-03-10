@@ -1,3 +1,5 @@
+/* global module */
+
 function scoreGuess({
   guess,
   solution,
@@ -78,5 +80,6 @@ function scoreGuess({
     earned: 0
   };
 }
+
 
 module.exports = { scoreGuess };

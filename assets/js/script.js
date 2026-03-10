@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // How to Play modal
   const btnHowto = document.getElementById("btn-howto");
   const howtoScreen = document.getElementById("howto-screen");
-  const closeHowtoScreen = document.getElementById("close-howto-screen")
+  const closeHowtoScreen = document.getElementById("close-howto-screen");
   // Clues (desktop + mobile)
   const clueButtons = document.querySelectorAll(".clue-btn");
   const clueFeedbackMobile = document.getElementById("clue-feedback-mobile");
@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const cluePopup = document.getElementById("clue-popup");
   const btnCluePopup = document.getElementById("btn-clue-popup");
   const closeCluePopup = document.getElementById("close-clue-popup");
-  const clueOpen = cluePopup && cluePopup.classList.contains("active");
 
   // Score panel
   const scorePanel = document.getElementById("score-panel");
@@ -174,8 +173,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!anchorEl) return;
     const float = document.createElement("div");
     float.className = "score-float";
-    float.textContent = typeof amountOrText === "number"
-      ? (amountOrText > 0 ? `+${amountOrText}` : `${amountOrText}`)
+    float.textContent = typeof amountOrText === "number" ?
+     (amountOrText > 0 ? `+${amountOrText}` : `${amountOrText}`)
       : amountOrText;
     if (typeof amountOrText !== "number") float.classList.add("streak");
     float.style.color = color;
@@ -392,8 +391,8 @@ function updateHistory() {
   let arr = JSON.parse(localStorage.getItem("history")) || [];
   let recent = arr.slice(-5); // last 5 games only
 
-  historyContent.innerHTML = arr.length === 0
-    ? "<p>No games played yet.</p>"
+  historyContent.innerHTML = arr.length === 0 ?
+   "<p>No games played yet.</p>"
     : recent.map(game => `
         <div class="history-card ${game.result === "Win" ? "win" : "loss"}">
           <h3>${game.result === "Win" ? "✅ Win" : "❌ Loss"}</h3>
@@ -617,24 +616,6 @@ function restoreDailyGridIfPlayed() {
   return false;
 }
 
-  // ===========================
-// 🧾 Save Game Result (Daily or Random)
-// ===========================
-
-function saveGameResult(win, attempts, scoreEarned) {
-  const historyArr = JSON.parse(localStorage.getItem("gameHistory")) || [];
-
-  historyArr.push({
-    date: new Date().toLocaleString(),
-    win,
-    attempts,
-    scoreEarned,
-    daily: isDailyMode
-  });
-
-  const trimmed = historyArr.slice(-5);
-  localStorage.setItem("gameHistory", JSON.stringify(trimmed));
-}
 
   // ===========================
   // ⌨️ Keyboard Input

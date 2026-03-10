@@ -1,3 +1,5 @@
+/* global module */
+
 function updateKeyState(currentState, newState) {
   // If the key is already correct, never downgrade
   if (currentState === "correct") return "correct";
