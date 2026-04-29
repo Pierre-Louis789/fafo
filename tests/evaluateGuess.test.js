@@ -6,6 +6,7 @@ describe("Guess evaluation logic", () => {
       "correct", "correct", "correct", "correct", "correct"
     ]);
   });
+  
 
   test("all absent letters", () => {
     expect(evaluateGuess("ZZZZZ", "APPLE")).toEqual([

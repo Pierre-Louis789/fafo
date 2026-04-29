@@ -24,3 +24,4 @@ describe("Keyboard state logic", () => {
     expect(updateKeyState("", "absent")).toBe("absent");
   });
 });
+ 
